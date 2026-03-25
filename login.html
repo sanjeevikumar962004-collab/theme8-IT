@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Stackly IT Solutions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           CSS VARIABLES & RESET (Shared)
+           ========================================== */
+        :root {
+            --base: #161616; --base-opp: #FAF7F6; --base-tint: #F3F1F0;
+            --font-main: 'Manrope', sans-serif; --radius-l: 24px; --radius-pill: 100px;
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [data-theme="dark"] {
+            --base: #FAF7F6; --base-opp: #161616; --base-tint: #222222;
+        }
+        
+        /* ==========================================
+           LOADER
+           ========================================== */
+        .loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #141218;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .iconLoaderProgress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotateLoader 2s linear infinite;
+            position: relative;
+            width: 240px; height: 240px;
+        }
+
+        .iconLoaderProgress svg {
+            stroke-width: 16px;
+            fill: none;
+            transform-origin: center;
+            z-index: 999;
+            position: absolute;
+        }
+
+        .iconLoaderProgressFirst circle {
+            animation: circleFirst 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628;
+            stroke-dashoffset: 0;
+            stroke: #7c57f4;
+            stroke-linecap: round;
+        }
+
+        .iconLoaderProgressSecond {
+            transform: rotate(-14deg);
+        }
+
+        .iconLoaderProgressSecond circle {
+            animation: circleSecond 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628;
+            stroke-dashoffset: 0;
+            stroke: #bfb2f7;
+            stroke-linecap: round;
+        }
+
+        @keyframes circleFirst { from, to { stroke-dashoffset: 50; } 50% { stroke-dashoffset: 625; } }
+        @keyframes circleSecond { from, to { stroke-dashoffset: -625; } 50% { stroke-dashoffset: -50; } }
+        @keyframes rotateLoader { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--base-opp); color: var(--base); -webkit-font-smoothing: antialiased; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden; }
+        a { color: inherit; text-decoration: none; }
+        
+        .t-muted { opacity: 0.6; }
+        .mxd-container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        
+        /* ==========================================
+           HEADER (Simplified for Auth Pages)
+           ========================================== */
+        .mxd-header {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; 
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1001; background: var(--base-opp); border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        }
+        .mxd-logo { display: flex; align-items: center; gap: 15px; font-weight: 800; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .mxd-color-switcher {
+            background: transparent; border: 2px solid var(--base); width: 44px; height: 24px; border-radius: 20px;
+            position: relative; cursor: pointer; transition: border-color 0.4s ease;
+        }
+        .mxd-color-switcher::after {
+            content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--base); border-radius: 50%; transition: transform 0.3s ease;
+        }
+        [data-theme="dark"] .mxd-color-switcher::after { transform: translateX(20px); }
+
+        /* ==========================================
+           AUTH SPECIFIC STYLES
+           ========================================== */
+        .auth-wrapper {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 120px 20px 60px; position: relative;
+        }
+        .auth-card {
+            background: var(--base-tint); width: 100%; max-width: 500px;
+            padding: 4rem 3rem; border-radius: var(--radius-l);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.05); text-align: center;
+            border: 1px solid rgba(128,128,128,0.1);
+        }
+        .auth-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+        
+        /* Role Toggle Switch */
+        .role-switcher {
+            display: flex; background: rgba(128,128,128,0.1); border-radius: 100px;
+            position: relative; margin: 2rem 0; padding: 5px;
+        }
+        .role-btn {
+            flex: 1; padding: 12px; text-align: center; font-weight: 700; cursor: pointer;
+            z-index: 2; transition: color 0.3s ease; color: var(--base); opacity: 0.6;
+            user-select: none;
+        }
+        .role-btn.active { opacity: 1; color: #fff; }
+        .role-slider {
+            position: absolute; top: 5px; left: 5px; height: calc(100% - 10px); width: calc(50% - 5px);
+            background: #8b5cf6; border-radius: 100px; z-index: 1; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .role-switcher[data-role="admin"] .role-slider { transform: translateX(100%); }
+
+        /* Floating Label Inputs */
+        .minimal-input-group { position: relative; margin-bottom: 2.5rem; text-align: left; }
+        .minimal-input {
+            width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(128,128,128,0.2);
+            padding: 10px 0; font-size: 1.1rem; color: var(--base); outline: none; transition: border-color 0.3s ease;
+        }
+        .minimal-input:focus { border-bottom-color: #8b5cf6; }
+        .minimal-label {
+            position: absolute; left: 0; top: 10px; font-size: 1.1rem; color: var(--base); opacity: 0.5; pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .minimal-input:focus ~ .minimal-label, .minimal-input:not(:placeholder-shown) ~ .minimal-label {
+            top: -20px; font-size: 0.8rem; font-weight: 700; color: #8b5cf6; opacity: 1; text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        /* Validation Error Msg */
+        .error-msg {
+            position: absolute; left: 0; bottom: -20px; font-size: 0.8rem; font-weight: 600; color: #ef4444; opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+        }
+
+        /* Buttons & Links */
+        .btn-violet {
+            background-color: #8b5cf6; color: #ffffff; border: none; width: 100%; padding: 16px; border-radius: 100px;
+            font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .btn-violet:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); }
+        .spinner { animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .auth-links { margin-top: 2rem; font-size: 0.95rem; font-weight: 600; }
+        .auth-links a { color: #8b5cf6; transition: color 0.3s ease; }
+        .auth-links a:hover { color: #7c3aed; text-decoration: underline; }
+
+        @media (max-width: 576px) {
+            .mxd-header { padding: 15px; }
+            .auth-card { padding: 3rem 2rem; border-radius: 20px; }
+        }
+        .anim-fade-up { opacity: 0; transform: translateY(30px); }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <figure class="iconLoaderProgress">
+            <svg class="iconLoaderProgressFirst" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+            <svg class="iconLoaderProgressSecond" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+        </figure>
+    </div>
+
+    <!-- Header -->
+    <header class="mxd-header">
+        <a href="index.html" class="mxd-logo">
+            <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
+        </a>
+        <button id="color-switcher" class="mxd-color-switcher" type="button" aria-label="Toggle Dark Mode"></button>
+    </header>
+
+    <main class="auth-wrapper">
+        <div class="auth-card anim-fade-up">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="t-muted">Enter your details to access your account.</p>
+
+            <!-- Role Toggle -->
+            <div class="role-switcher" data-role="user">
+                <div class="role-slider"></div>
+                <div class="role-btn active" data-role="user">User</div>
+                <div class="role-btn" data-role="admin">Admin</div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" novalidate>
+                <div class="minimal-input-group">
+                    <input type="email" id="email" class="minimal-input" placeholder=" " required>
+                    <label for="email" class="minimal-label">Email Address</label>
+                    <span class="error-msg" id="email-error">Invalid email address</span>
+                </div>
+                
+                <div class="minimal-input-group">
+                    <input type="password" id="password" class="minimal-input" placeholder=" " required>
+                    <label for="password" class="minimal-label">Password</label>
+                    <span class="error-msg" id="password-error">Password is required</span>
+                </div>
+
+                <div style="text-align: right; margin-top: -15px; margin-bottom: 2rem;">
+                    <a href="forgot-password.html" style="font-size: 0.9rem; font-weight: 600; color: var(--base); opacity: 0.7;">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-violet" id="submitBtn">
+                    <i class="ph-bold ph-spinner spinner" id="btnSpinner"></i>
+                    <span id="btnText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="auth-links">
+                <span class="t-muted">Don't have an account?</span> <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // 1. Dark Mode Toggle
+        const switcher = document.getElementById('color-switcher');
+        switcher.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // 2. Initial Loader & Entrance Animation
+        const initTl = gsap.timeline();
+
+        function playIntro() {
+            if (document.body.dataset.introPlayed) return;
+            document.body.dataset.introPlayed = true;
+
+            initTl.to('#loader', { 
+                opacity: 0, duration: 0.8, delay: 2, ease: "power2.inOut", 
+                onComplete: () => {
+                    const ldr = document.getElementById('loader');
+                    if (ldr) {
+                        ldr.style.display = 'none';
+                        ldr.style.pointerEvents = 'none';
+                    }
+                } 
+            })
+            .to('.anim-fade-up', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, "-=0.3");
+        }
+
+        // Trigger loader
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(playIntro, 1);
+        } else {
+            document.addEventListener('DOMContentLoaded', playIntro);
+        }
+        window.addEventListener('load', playIntro);
+        setTimeout(playIntro, 2500); // Safety timeout
+
+        // 3. Role Switcher Logic
+        const roleBtns = document.querySelectorAll('.role-btn');
+        const roleContainer = document.querySelector('.role-switcher');
+        
+        roleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                roleBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                roleContainer.setAttribute('data-role', btn.getAttribute('data-role'));
+            });
+        });
+
+        // 4. Form Validation Logic
+        const form = document.getElementById('loginForm');
+        
+        function showError(inputId, errorId, msg) {
+            const errorEl = document.getElementById(errorId);
+            const inputEl = document.getElementById(inputId);
+            errorEl.textContent = msg;
+            errorEl.style.opacity = '1';
+            inputEl.style.borderBottomColor = '#ef4444';
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-msg').forEach(el => el.style.opacity = '0');
+            document.querySelectorAll('.minimal-input').forEach(el => el.style.borderBottomColor = '');
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearErrors();
+            let isValid = true;
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            // Email validation (Regex for standard email format)
+            if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                showError('email', 'email-error', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Password validation (Just checking if not empty for login)
+            if (password.length === 0) {
+                showError('password', 'password-error', 'Password cannot be empty');
+                isValid = false;
+            }
+
+            if (isValid) {
+                const btnText = document.getElementById('btnText');
+                const btnSpinner = document.getElementById('btnSpinner');
+                const role = roleContainer.getAttribute('data-role');
+                
+                // Loading State
+                btnText.textContent = `Authenticating ${role}...`;
+                btnSpinner.style.display = 'block';
+                
+                // Simulate API Call
+                setTimeout(() => {
+                    alert(`Login Successful! Redirecting to ${role} dashboard...`);
+                    if (role === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        window.location.href = 'user-dashboard.html';
+                    }
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

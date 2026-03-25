@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - Stackly IT Solutions</title>
+    <meta name="description" content="Get in touch with Stackly. Let's discuss how we can elevate your digital presence and build cutting-edge software solutions.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Bootstrap Grid -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           CSS VARIABLES & RESET
+           ========================================== */
+        :root {
+            --base: #161616;
+            --base-opp: #FAF7F6;
+            --base-tint: #F3F1F0;
+            --accent: #d2c4e8;
+            --additional: #e0eed5;
+            --font-main: 'Manrope', sans-serif;
+            --radius-l: 24px;
+            --radius-pill: 100px;
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --base: #FAF7F6;
+            --base-opp: #161616;
+            --base-tint: #222222;
+            --accent: #5c4b75;
+            --additional: #4b5e3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--base-opp);
+            color: var(--base);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        ul { list-style: none; }
+        img, video { max-width: 100%; height: auto; display: block; }
+
+        /* ==========================================
+           TYPOGRAPHY & UTILITIES
+           ========================================== */
+        h1, h2, h3, h4 { font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+        h1 { font-size: clamp(3rem, 8vw, 7rem); }
+        h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+        h3 { font-size: clamp(1.5rem, 2.5vw, 2.2rem); }
+        h4 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+        
+        .t-large { font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.5; }
+        .t-140 { font-size: 1.25rem; font-weight: 600; }
+        .t-bright { opacity: 0.9; }
+        .t-muted { opacity: 0.6; }
+        .t-xsmall { font-size: 0.875rem; }
+
+        .bg-base-tint { background-color: var(--base-tint); }
+        
+        .radius-l { border-radius: var(--radius-l); }
+        .mxd-section { padding: 5rem 0; }
+        .mxd-container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        
+        /* ==========================================
+           LOADER
+           ========================================== */
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #141218; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .iconLoaderProgress {
+            display: flex; align-items: center; justify-content: center;
+            animation: rotateLoader 2s linear infinite;
+            position: relative; width: 240px; height: 240px;
+        }
+
+        .iconLoaderProgress svg {
+            stroke-width: 16px; fill: none; transform-origin: center;
+            z-index: 999; position: absolute;
+        }
+
+        .iconLoaderProgressFirst circle {
+            animation: circleFirst 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628; stroke-dashoffset: 0;
+            stroke: #7c57f4; stroke-linecap: round;
+        }
+
+        .iconLoaderProgressSecond { transform: rotate(-14deg); }
+
+        .iconLoaderProgressSecond circle {
+            animation: circleSecond 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628; stroke-dashoffset: 0;
+            stroke: #bfb2f7; stroke-linecap: round;
+        }
+
+        @keyframes circleFirst { from, to { stroke-dashoffset: 50; } 50% { stroke-dashoffset: 625; } }
+        @keyframes circleSecond { from, to { stroke-dashoffset: -625; } 50% { stroke-dashoffset: -50; } }
+        @keyframes rotateLoader { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ==========================================
+           HEADER & NAVIGATION
+           ========================================== */
+        .mxd-header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
+            z-index: 1001; background: var(--base-opp);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+        .mxd-header__logo .mxd-logo {
+            display: flex; align-items: center; gap: 15px;
+            font-weight: 800; font-size: 1.4rem; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--base);
+        }
+        .mxd-header__controls { display: flex; align-items: center; gap: 20px; }
+
+        .mxd-color-switcher {
+            background: transparent; border: 2px solid var(--base);
+            width: 44px; height: 24px; border-radius: 20px;
+            position: relative; cursor: pointer; transition: border-color 0.4s ease;
+        }
+        .mxd-color-switcher::after {
+            content: ''; position: absolute; top: 2px; left: 2px;
+            width: 16px; height: 16px; background: var(--base); border-radius: 50%;
+            transition: transform 0.3s, background-color 0.4s ease;
+        }
+        [data-theme="dark"] .mxd-color-switcher::after { transform: translateX(20px); }
+
+        .mxd-nav__hamburger {
+            position: relative; width: 50px; height: 50px;
+            background: var(--base); border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            gap: 6px; cursor: pointer; border: none; transition: background-color 0.4s ease;
+        }
+        .mxd-nav__hamburger .hamburger__line {
+            width: 20px; height: 2px; background: var(--base-opp); transition: var(--transition-smooth);
+        }
+        .mxd-nav__hamburger.is-active .hamburger__line:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .mxd-nav__hamburger.is-active .hamburger__line:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+        .mxd-menu__wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--base-opp); z-index: 1000;
+            opacity: 0; visibility: hidden; display: flex; align-items: center; justify-content: center;
+            padding-top: 80px;
+        }
+        .mxd-menu__contain { width: 100%; max-width: 1200px; padding: 0 40px; }
+        .main-menu__accordion { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1; }
+        .main-menu__link { 
+            display: block; overflow: hidden; height: 1.3em; text-decoration: none; color: var(--base); margin-bottom: 0.5rem;
+        }
+        .menu-text-wrapper { display: block; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .main-menu__item { display: block; line-height: 1.3em; height: 1.3em; }
+        .main-menu__link:hover .menu-text-wrapper { transform: translateY(-1.3em); }
+        .hover-text { color: #8b5cf6; }
+
+        /* ==========================================
+           BUTTONS & TAGS
+           ========================================== */
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 24px; border-radius: var(--radius-pill);
+            font-weight: 600; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden; z-index: 1;
+        }
+        .btn i { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .btn:hover i.ph-arrow-up-right, .btn:hover i.ph-arrow-right { transform: translate(4px, -4px); }
+        
+        .btn-outline { border: 1px solid var(--base); color: var(--base); background: transparent; }
+        .btn-outline::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--base); z-index: -1; transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-outline:hover { color: var(--base-opp); }
+        .btn-outline:hover::before { transform: scaleY(1); }
+
+        .btn-violet {
+            background-color: #8b5cf6; color: #ffffff; border: none;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+        }
+        .btn-violet::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #7c3aed; z-index: -1; transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-violet:hover { color: #ffffff; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); }
+        .btn-violet:hover::before { transform: scaleY(1); }
+
+        /* ==========================================
+           CONTACT PAGE SPECIFIC STYLES
+           ========================================== */
+        .contact-hero {
+            position: relative; padding-top: 180px; padding-bottom: 40px; text-align: center;
+        }
+        .hero-title-line { overflow: hidden; line-height: 1.1; }
+        .ht-text {
+            display: inline-block; font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase;
+            will-change: transform;
+        }
+
+        /* ==========================================
+           NEW PREMIUM CONTACT SECTION
+           ========================================== */
+        .premium-contact-wrapper {
+            background: var(--base-tint);
+            border-radius: 40px;
+            padding: 6rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            box-shadow: inset 0 0 0 1px rgba(128,128,128,0.1);
+        }
+
+        /* Left Side: Massive Typography */
+        .contact-huge-title {
+            font-size: clamp(4rem, 8vw, 6.5rem);
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: var(--base);
+        }
+        .contact-links-wrap {
+            margin-top: 4rem;
+        }
+        .huge-link {
+            display: block;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 800;
+            color: var(--base);
+            margin-bottom: 1rem;
+            width: fit-content;
+            position: relative;
+            transition: color 0.4s ease;
+        }
+        .huge-link::after {
+            content: ''; position: absolute; left: 0; bottom: 0;
+            width: 0%; height: 3px; background: #8b5cf6;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .huge-link:hover { color: #8b5cf6; }
+        .huge-link:hover::after { width: 100%; }
+        
+        .contact-location {
+            margin-top: 3rem;
+        }
+        .contact-location h4 {
+            font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;
+            opacity: 0.5; margin-bottom: 0.5rem;
+        }
+
+        /* Right Side: Floating Label Form */
+        .minimal-form-container {
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .minimal-input-group {
+            position: relative;
+            margin-bottom: 3.5rem;
+        }
+        .minimal-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(128,128,128,0.2);
+            padding: 10px 0;
+            font-size: 1.5rem;
+            font-family: inherit;
+            color: var(--base);
+            outline: none;
+            border-radius: 0;
+            transition: border-color 0.3s ease;
+        }
+        .minimal-input:focus {
+            border-bottom-color: #8b5cf6;
+        }
+        .minimal-label {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            font-size: 1.5rem;
+            color: var(--base);
+            opacity: 0.5;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Floating animation when focused or filled */
+        .minimal-input:focus ~ .minimal-label,
+        .minimal-input:not(:placeholder-shown) ~ .minimal-label {
+            top: -20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #8b5cf6;
+            opacity: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        textarea.minimal-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .contact-socials-new {
+            display: flex; gap: 15px; margin-top: 3rem;
+        }
+        .contact-socials-new a {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 1px solid rgba(128,128,128,0.2);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.5rem; color: var(--base);
+            transition: all 0.4s ease;
+        }
+        .contact-socials-new a:hover {
+            background: #8b5cf6; color: #fff; border-color: #8b5cf6;
+            transform: translateY(-5px);
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        .mxd-footer { padding: 5rem 0 2rem; }
+        .footer-blocks__card { padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%; }
+        .footer-nav__item { margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600; cursor: pointer; }
+        .footer-nav__item:hover { text-decoration: underline; }
+        .footer-blocks__title-m { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+        .form-light input { 
+            width: 100%; padding: 15px 20px; border-radius: 30px; 
+            border: 1px solid rgba(0,0,0,0.1); background: transparent; 
+            margin-bottom: 10px; font-family: inherit; color: inherit;
+        }
+        .btn-form { width: 100%; justify-content: center; background: var(--base); color: var(--base-opp); border: 1px solid var(--base); }
+        .btn-form:hover { background: transparent; color: var(--base); }
+
+        /* ==========================================
+           RESPONSIVE ADJUSTMENTS
+           ========================================== */
+        @media (max-width: 991px) {
+            .premium-contact-wrapper {
+                grid-template-columns: 1fr;
+                padding: 4rem 3rem;
+                gap: 4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mxd-header { padding: 15px 20px; }
+            .btn-say-hello { display: none !important; } 
+            .mxd-header__controls { gap: 15px; }
+            .mxd-nav__hamburger { width: 45px; height: 45px; }
+            
+            .contact-hero { padding-top: 140px; padding-bottom: 20px; }
+            .mxd-menu__contain { padding: 0 20px; text-align: center; }
+            .mxd-menu__contain .col-md-6 { margin-bottom: 2rem; }
+        }
+
+        @media (max-width: 576px) {
+            .mxd-header { padding: 12px 10px; }
+            .mxd-header__logo .mxd-logo { font-size: 1rem; gap: 6px; }
+            .mxd-header__logo svg { width: 20px; height: 20px; }
+            .mxd-header__controls { gap: 6px; }
+            .mxd-nav__hamburger { width: 38px; height: 38px; }
+            .mxd-color-switcher { width: 38px; height: 22px; }
+            .mxd-color-switcher::after { width: 14px; height: 14px; top: 2px; left: 2px; }
+            
+            .contact-hero { padding-top: 120px; }
+            .premium-contact-wrapper { padding: 3rem 1.5rem; gap: 3rem; border-radius: 24px; }
+            .minimal-input { font-size: 1.2rem; }
+            .minimal-label { font-size: 1.2rem; }
+        }
+
+        /* Base GSAP Anim Setup */
+        .anim-uni-in-up, .anim-uni-scale-in, .form-anim { visibility: hidden; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <figure class="iconLoaderProgress">
+            <svg class="iconLoaderProgressFirst" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+            <svg class="iconLoaderProgressSecond" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+        </figure>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <nav class="mxd-menu__wrapper">
+        <div class="mxd-menu__contain row w-100 align-items-center">
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center text-center text-md-start">
+                <p class="t-large mb-4">👋 Nice to see you!<br>We are Stackly, a digital agency based in Salem, Tamil Nadu.</p>
+                <p class="t-xsmall t-muted">hello@stackly.in <br> +91 98765 43210</p>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-end mt-5 mt-md-0">
+                <ul class="main-menu__accordion text-center text-md-end">
+                    <li>
+                        <a href="index.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Home</span>
+                                <span class="main-menu__item hover-text">Home</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">About</span>
+                                <span class="main-menu__item hover-text">About</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="services.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Services</span>
+                                <span class="main-menu__item hover-text">Services</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="blog.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Blog</span>
+                                <span class="main-menu__item hover-text">Blog</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Contact</span>
+                                <span class="main-menu__item hover-text">Contact</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="mxd-header">
+        <div class="mxd-header__logo">
+            <a href="index.html" class="mxd-logo">
+                <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
+            </a>
+        </div>
+        <div class="mxd-header__controls">
+            <button id="color-switcher" class="mxd-color-switcher" type="button" aria-label="Toggle Dark Mode"></button>
+            <a class="btn btn-outline btn-say-hello" href="login.html">
+                Login <i class="ph-bold ph-arrow-up-right"></i>
+            </a>
+            <button class="mxd-nav__hamburger" aria-label="Menu">
+                <div class="hamburger__line"></div>
+                <div class="hamburger__line"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Contact Hero -->
+        <section class="contact-hero">
+            <div class="mxd-container">
+                <div class="hero-title-wrapper">
+                    <div class="hero-title-line"><span class="ht-text">Let's build</span></div>
+                    <div class="hero-title-line"><span class="ht-text" style="color: #8b5cf6;">something great.</span></div>
+                    <p class="t-large mt-4 ht-subtext px-3 t-muted" style="max-width: 650px; margin-inline: auto;">
+                        Have a project in mind? We'd love to hear about it. Drop us a line and our team will get back to you within 24 hours.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Premium Interactive Contact Section -->
+        <section class="mxd-section pt-0">
+            <div class="mxd-container">
+                <div class="premium-contact-wrapper anim-uni-scale-in">
+                    
+                    <!-- Left: Typography & Details -->
+                    <div class="contact-text-block">
+                        <h2 class="contact-huge-title anim-uni-in-up">Hello.</h2>
+                        <p class="t-large t-muted anim-uni-in-up" style="transition-delay: 0.1s; max-width: 400px;">
+                            Whether you have a question, a project inquiry, or just want to say hi, we're ready.
+                        </p>
+                        
+                        <div class="contact-links-wrap anim-uni-in-up" style="transition-delay: 0.2s;">
+                            <a href="mailto:hello@stackly.in" class="huge-link">hello@stackly.in</a>
+                            <a href="tel:+919876543210" class="huge-link">+91 98765 43210</a>
+                        </div>
+                        
+                        <div class="contact-location anim-uni-in-up" style="transition-delay: 0.3s;">
+                            <h4>Our Studio</h4>
+                            <p class="t-large">123 Tech Park Avenue,<br>Salem, Tamil Nadu 636001</p>
+                        </div>
+                        
+                        <div class="contact-socials-new anim-uni-in-up" style="transition-delay: 0.4s;">
+                            <a href="404.html" aria-label="LinkedIn"><i class="ph-fill ph-linkedin-logo"></i></a>
+                            <a href="404.html" aria-label="Twitter"><i class="ph-fill ph-twitter-logo"></i></a>
+                            <a href="404.html" aria-label="Instagram"><i class="ph-fill ph-instagram-logo"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Floating Label Form -->
+                    <div class="minimal-form-container">
+                        <form onsubmit="event.preventDefault(); window.location.href='404.html';">
+                            <div class="minimal-input-group form-anim">
+                                <!-- Placeholder is set to " " (a single space) to trigger the :placeholder-shown CSS trick -->
+                                <input type="text" id="name" class="minimal-input" placeholder=" " required>
+                                <label for="name" class="minimal-label">What's your name?</label>
+                            </div>
+                            
+                            <div class="minimal-input-group form-anim">
+                                <input type="email" id="email" class="minimal-input" placeholder=" " required>
+                                <label for="email" class="minimal-label">Your email address</label>
+                            </div>
+                            
+                            <div class="minimal-input-group form-anim">
+                                <input type="text" id="subject" class="minimal-input" placeholder=" " required>
+                                <label for="subject" class="minimal-label">Subject</label>
+                            </div>
+                            
+                            <div class="minimal-input-group form-anim">
+                                <textarea id="message" class="minimal-input" placeholder=" " required></textarea>
+                                <label for="message" class="minimal-label">Tell us about your project</label>
+                            </div>
+                            
+                            <div class="form-anim mt-5">
+                                <button type="submit" class="btn btn-violet" style="padding: 18px 45px; font-size: 1.25rem; border-radius: 100px;">
+                                    Send Message <i class="ph-bold ph-paper-plane-tilt"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mxd-footer">
+        <div class="mxd-container">
+            <div class="mb-5 anim-uni-in-up">
+                <a href="index.html" class="mxd-logo">
+                    <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;">
+                </a>
+            </div>
+            <div class="row g-4">
+                <div class="col-12 col-md-4 anim-uni-in-up">
+                    <div class="footer-blocks__card">
+                        <ul class="footer-nav mb-5">
+                            <li class="footer-nav__item"><a href="404.html">Home</a></li>
+                            <li class="footer-nav__item"><a href="404.html">About us</a></li>
+                            <li class="footer-nav__item"><a href="404.html">Services</a></li>
+                            <li class="footer-nav__item"><a href="404.html">Blog</a></li>
+                            <li class="footer-nav__item"><a href="404.html">Contact</a></li>
+                        </ul>
+                        <div class="d-flex gap-3 t-muted">
+                            <a href="404.html">Privacy Policy</a>
+                            <a href="404.html">Terms</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 anim-uni-in-up">
+                    <div class="footer-blocks__card d-flex flex-column justify-content-center">
+                        <p class="footer-blocks__title-m">hello@stackly.in</p>
+                        <p class="footer-blocks__title-m">+91 98765 43210</p>
+                        <p class="t-muted mt-3">Salem, Tamil Nadu, India</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 anim-uni-in-up">
+                    <div class="footer-blocks__card">
+                        <p class="footer-blocks__title-m">Subscribe to our insights</p>
+                        <form class="form-light" onsubmit="event.preventDefault(); window.location.href='404.html';">
+                            <input type="email" placeholder="Your Email" required>
+                            <button class="btn btn-form mt-2" type="submit">Subscribe</button>
+                        </form>
+                        <p class="t-muted mt-4 text-center">© 2026 Stackly. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        // Register GSAP Plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Initial Loader & Hero Animation
+        const initTl = gsap.timeline();
+
+        function playIntro() {
+            if (document.body.dataset.introPlayed) return;
+            document.body.dataset.introPlayed = true;
+
+            initTl.to('#loader', { 
+                opacity: 0, duration: 0.8, delay: 2, ease: "power2.inOut", 
+                onComplete: () => {
+                    const ldr = document.getElementById('loader');
+                    if (ldr) { ldr.style.display = 'none'; ldr.style.pointerEvents = 'none'; }
+                } 
+            })
+            .from('.ht-text', { yPercent: 120, stagger: 0.15, duration: 1.2, ease: "power4.out" }, "-=0.3")
+            .from('.ht-subtext', { opacity: 0, y: 30, duration: 1, ease: "power3.out" }, "-=0.8");
+        }
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(playIntro, 1);
+        } else {
+            document.addEventListener('DOMContentLoaded', playIntro);
+        }
+        window.addEventListener('load', playIntro);
+        setTimeout(playIntro, 2000);
+
+        // 2. Global Scroll Animations
+        gsap.utils.toArray('.anim-uni-in-up').forEach(el => {
+            gsap.fromTo(el, 
+                { autoAlpha: 0, y: 60 }, 
+                { autoAlpha: 1, y: 0, duration: 1, ease: "power3.out",
+                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                }
+            );
+        });
+
+        gsap.utils.toArray('.anim-uni-scale-in').forEach((el) => {
+            gsap.fromTo(el, 
+                { autoAlpha: 0, scale: 0.95, y: 40 }, 
+                { autoAlpha: 1, scale: 1, y: 0, duration: 1, ease: "power3.out",
+                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                }
+            );
+        });
+
+        // 3. Staggered Form Fields Animation
+        gsap.fromTo('.form-anim', 
+            { autoAlpha: 0, y: 30 }, 
+            { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power2.out",
+              scrollTrigger: { trigger: '.minimal-form-container', start: "top 80%" }
+            }
+        );
+
+        // 4. Smooth Menu Nav Animations
+        const menuTl = gsap.timeline({ paused: true, reversed: true });
+        
+        menuTl.to('.mxd-menu__wrapper', { autoAlpha: 1, duration: 0.4, ease: "power2.inOut" })
+              .from('.mxd-menu__contain .col-md-6:first-child > *', { y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: "power3.out" }, "-=0.2")
+              .from('.main-menu__link', { y: 40, opacity: 0, stagger: 0.1, duration: 0.6, ease: "power3.out" }, "-=0.6");
+
+        const hamburger = document.querySelector('.mxd-nav__hamburger');
+        const navWrap = document.querySelector('.mxd-menu__wrapper');
+        const navLinks = document.querySelectorAll('.nav-link-click');
+        let isMenuOpen = false;
+        
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            hamburger.classList.toggle('is-active');
+            if (isMenuOpen) {
+                menuTl.play();
+                document.body.style.overflow = 'hidden'; 
+            } else {
+                menuTl.reverse();
+                document.body.style.overflow = '';
+            }
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        navLinks.forEach(link => { link.addEventListener('click', toggleMenu); });
+
+        // 5. Dark Mode Toggle
+        const switcher = document.getElementById('color-switcher');
+        switcher.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard - Stackly IT Solutions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Shared Variables & Base */
+        :root {
+            --base: #161616; --base-opp: #FAF7F6; --base-tint: #F3F1F0;
+            --font-main: 'Manrope', sans-serif; --radius-l: 24px;
+        }
+        [data-theme="dark"] {
+            --base: #FAF7F6; --base-opp: #161616; --base-tint: #222222;
+        }
+
+        /* ==========================================
+           LOADER
+           ========================================== */
+        .loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #141218;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .iconLoaderProgress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotateLoader 2s linear infinite;
+            position: relative;
+            width: 240px; height: 240px;
+        }
+
+        .iconLoaderProgress svg {
+            stroke-width: 16px;
+            fill: none;
+            transform-origin: center;
+            z-index: 999;
+            position: absolute;
+        }
+
+        .iconLoaderProgressFirst circle {
+            animation: circleFirst 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628;
+            stroke-dashoffset: 0;
+            stroke: #7c57f4;
+            stroke-linecap: round;
+        }
+
+        .iconLoaderProgressSecond {
+            transform: rotate(-14deg);
+        }
+
+        .iconLoaderProgressSecond circle {
+            animation: circleSecond 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628;
+            stroke-dashoffset: 0;
+            stroke: #bfb2f7;
+            stroke-linecap: round;
+        }
+
+        @keyframes circleFirst { from, to { stroke-dashoffset: 50; } 50% { stroke-dashoffset: 625; } }
+        @keyframes circleSecond { from, to { stroke-dashoffset: -625; } 50% { stroke-dashoffset: -50; } }
+        @keyframes rotateLoader { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--base-opp); color: var(--base); -webkit-font-smoothing: antialiased; transition: background-color 0.4s ease, color 0.4s ease; overflow-x: hidden; }
+        a { color: inherit; text-decoration: none; }
+        .t-muted { opacity: 0.6; }
+
+        /* Dashboard Layout */
+        .dashboard-container { display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px; background: var(--base-tint); padding: 2rem;
+            display: flex; flex-direction: column; border-right: 1px solid rgba(128,128,128,0.1);
+            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mxd-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3rem; color: #8b5cf6;}
+        
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 14px 20px;
+            color: var(--base); opacity: 0.6; border-radius: 16px; font-weight: 600;
+            transition: all 0.3s ease; margin-bottom: 8px; font-size: 1.05rem;
+        }
+        .nav-item i { font-size: 1.3rem; }
+        .nav-item:hover, .nav-item.active { background: var(--base-opp); opacity: 1; color: #8b5cf6; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .nav-item.logout:hover { color: #ef4444; }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1; padding: 2rem 3rem; margin-left: 280px; width: calc(100% - 280px);
+        }
+        
+        /* Topbar */
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .topbar-title h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.2rem; }
+        
+        /* Switcher & Avatar */
+        .mxd-color-switcher { background: transparent; border: 2px solid var(--base); width: 44px; height: 24px; border-radius: 20px; position: relative; cursor: pointer; transition: border-color 0.4s ease; }
+        .mxd-color-switcher::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--base); border-radius: 50%; transition: transform 0.3s ease; }
+        [data-theme="dark"] .mxd-color-switcher::after { transform: translateX(20px); }
+        
+        .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: #8b5cf6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
+
+        /* Cards */
+        .dash-card {
+            background: var(--base-tint); border-radius: var(--radius-l); padding: 2rem;
+            border: 1px solid rgba(128,128,128,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; display: flex; flex-direction: column;
+        }
+        .dash-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        [data-theme="dark"] .dash-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .stat-value { font-size: 3rem; font-weight: 800; line-height: 1; margin: 1rem 0; color: var(--base); }
+        .stat-icon { font-size: 1.5rem; color: #8b5cf6; }
+        
+        /* Chart Containers */
+        .chart-container { position: relative; height: 300px; width: 100%; margin-top: 1rem; flex-grow: 1; }
+        .chart-container-sm { position: relative; height: 250px; width: 100%; margin-top: 1rem; display: flex; justify-content: center; align-items: center;}
+
+        /* Lists */
+        .activity-item { display: flex; align-items: center; gap: 15px; padding: 1.2rem 0; border-bottom: 1px solid rgba(128,128,128,0.1); }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-icon { width: 45px; height: 45px; border-radius: 50%; background: var(--base-opp); display: flex; align-items: center; justify-content: center; color: #8b5cf6; font-size: 1.2rem; flex-shrink: 0; }
+
+        .deadline-item { display: flex; gap: 15px; padding: 1.2rem 0; border-bottom: 1px solid rgba(128,128,128,0.1); }
+        .deadline-item:last-child { border-bottom: none; }
+        .deadline-date { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; padding: 10px; border-radius: 12px; text-align: center; font-weight: 800; line-height: 1.2; min-width: 60px; height: fit-content; }
+        .deadline-date span { display: block; font-size: 0.8rem; text-transform: uppercase; font-weight: 600; opacity: 0.8; margin-top: 2px;}
+
+        /* Mobile Adjustments */
+        .mobile-toggle { display: none; background: transparent; border: none; font-size: 1.8rem; color: var(--base); cursor: pointer; }
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .sidebar-overlay.open { opacity: 1; visibility: visible; }
+
+        @media (max-width: 991px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); box-shadow: 0 0 50px rgba(0,0,0,0.2); }
+            .main-content { margin-left: 0; width: 100%; padding: 2rem 1.5rem; }
+            .mobile-toggle { display: block; }
+        }
+
+        /* Animations */
+        .anim-fade-up { opacity: 0; transform: translateY(20px); }
+        .anim-card { opacity: 0; transform: translateY(40px); }
+    </style>
+</head>
+<body style="overflow-x: hidden;">
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <figure class="iconLoaderProgress">
+            <svg class="iconLoaderProgressFirst" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+            <svg class="iconLoaderProgressSecond" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+        </figure>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="dashboard-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <a href="index.html" class="mxd-logo">
+                    <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;">
+                </a>
+                <button class="mobile-toggle close-sidebar"><i class="ph ph-x"></i></button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="404.html" class="nav-item active"><i class="ph ph-squares-four"></i> Dashboard</a>
+                <a href="404.html" class="nav-item"><i class="ph ph-folder-open"></i> My Projects</a>
+                <a href="404.html" class="nav-item"><i class="ph ph-receipt"></i> Invoices</a>
+                <a href="404.html" class="nav-item"><i class="ph ph-chart-line-up"></i> Analytics</a>
+                <a href="404.html" class="nav-item"><i class="ph ph-lifebuoy"></i> Support</a>
+                <a href="404.html" class="nav-item"><i class="ph ph-gear"></i> Settings</a>
+            </nav>
+            
+            <div class="mt-auto">
+                <a href="login.html" class="nav-item logout"><i class="ph ph-sign-out"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="mobile-toggle open-sidebar"><i class="ph ph-list"></i></button>
+                    <div class="topbar-title">
+                        <h1 class="anim-fade-up">Welcome back, Alex</h1>
+                        <p class="t-muted anim-fade-up" style="transition-delay: 0.1s;">Here is what's happening with your account today.</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-4 anim-fade-up" style="transition-delay: 0.2s;">
+                    <button id="color-switcher" class="mxd-color-switcher" type="button"></button>
+                    <div class="profile-avatar">A</div>
+                </div>
+            </header>
+
+            <!-- Metric Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-md-4">
+                    <div class="dash-card anim-card">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="t-muted fw-bold">Active Projects</span>
+                            <i class="ph-fill ph-folder-open stat-icon"></i>
+                        </div>
+                        <div class="stat-value">3</div>
+                        <p class="t-muted" style="font-size: 0.9rem;">2 approaching deadline</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="dash-card anim-card" style="transition-delay: 0.1s;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="t-muted fw-bold">Pending Invoices</span>
+                            <i class="ph-fill ph-receipt stat-icon"></i>
+                        </div>
+                        <div class="stat-value">$2,450</div>
+                        <p class="t-muted" style="font-size: 0.9rem; color: #ef4444;">Due in 5 days</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="dash-card anim-card" style="transition-delay: 0.2s;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="t-muted fw-bold">Support Tickets</span>
+                            <i class="ph-fill ph-chat-circle-text stat-icon"></i>
+                        </div>
+                        <div class="stat-value">1</div>
+                        <p class="t-muted" style="font-size: 0.9rem;">Status: In Progress</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row g-4 mb-4">
+                <!-- Bar Chart: Project Progress -->
+                <div class="col-12 col-lg-8">
+                    <div class="dash-card anim-card" style="transition-delay: 0.3s;">
+                        <h3 style="font-size: 1.3rem; font-weight: 800;">Project Progress</h3>
+                        <p class="t-muted mb-3" style="font-size: 0.9rem;">Milestone completion status for active applications.</p>
+                        <div class="chart-container">
+                            <canvas id="projectBarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Doughnut Chart: Task Distribution -->
+                <div class="col-12 col-lg-4">
+                    <div class="dash-card anim-card" style="transition-delay: 0.4s;">
+                        <h3 style="font-size: 1.3rem; font-weight: 800;">Tasks Overview</h3>
+                        <p class="t-muted mb-3" style="font-size: 0.9rem;">Current sprint distribution.</p>
+                        <div class="chart-container-sm">
+                            <canvas id="taskPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lists Row -->
+            <div class="row g-4">
+                <!-- Recent Activity -->
+                <div class="col-12 col-lg-6">
+                    <div class="dash-card anim-card p-0 overflow-hidden" style="transition-delay: 0.5s;">
+                        <div class="p-4 border-bottom border-light" style="border-color: rgba(128,128,128,0.1) !important;">
+                            <h3 style="font-size: 1.3rem; font-weight: 800;">Recent Activity</h3>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <div class="activity-item">
+                                <div class="activity-icon"><i class="ph-fill ph-check-circle"></i></div>
+                                <div>
+                                    <h4 class="mb-1" style="font-size: 1.1rem;">Phase 1 Completed</h4>
+                                    <p class="t-muted m-0" style="font-size: 0.9rem;">E-Commerce Redesign Project</p>
+                                </div>
+                                <div class="ms-auto t-muted" style="font-size: 0.85rem;">2h ago</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="color: #3b82f6;"><i class="ph-fill ph-file-text"></i></div>
+                                <div>
+                                    <h4 class="mb-1" style="font-size: 1.1rem;">New Invoice Generated</h4>
+                                    <p class="t-muted m-0" style="font-size: 0.9rem;">Invoice #INV-2026-089</p>
+                                </div>
+                                <div class="ms-auto t-muted" style="font-size: 0.85rem;">1d ago</div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon" style="color: #10b981;"><i class="ph-fill ph-upload-simple"></i></div>
+                                <div>
+                                    <h4 class="mb-1" style="font-size: 1.1rem;">Files Uploaded</h4>
+                                    <p class="t-muted m-0" style="font-size: 0.9rem;">Brand Assets & Logos provided</p>
+                                </div>
+                                <div class="ms-auto t-muted" style="font-size: 0.85rem;">3d ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Deadlines -->
+                <div class="col-12 col-lg-6">
+                    <div class="dash-card anim-card p-0 overflow-hidden" style="transition-delay: 0.6s;">
+                        <div class="p-4 border-bottom border-light" style="border-color: rgba(128,128,128,0.1) !important;">
+                            <h3 style="font-size: 1.3rem; font-weight: 800;">Upcoming Deadlines</h3>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <div class="deadline-item">
+                                <div class="deadline-date">24<span>Oct</span></div>
+                                <div>
+                                    <h4 class="mb-1" style="font-size: 1.1rem;">Wireframe Approval</h4>
+                                    <p class="t-muted m-0" style="font-size: 0.9rem;">Mobile Banking App UI</p>
+                                </div>
+                            </div>
+                            <div class="deadline-item">
+                                <div class="deadline-date" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">28<span>Oct</span></div>
+                                <div>
+                                    <h4 class="mb-1" style="font-size: 1.1rem;">Invoice #INV-2026-089 Due</h4>
+                                    <p class="t-muted m-0" style="font-size: 0.9rem;">Amount: $2,450.00</p>
+                                </div>
+                            </div>
+                            <div class="deadline-item">
+                                <div class="deadline-date" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">05<span>Nov</span></div>
+                                <div>
+                                    <h4 class="mb-1" style="font-size: 1.1rem;">Beta Testing Kickoff</h4>
+                                    <p class="t-muted m-0" style="font-size: 0.9rem;">Logistics Dashboard Platform</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // Global Array to hold chart instances for theme updating
+        let myCharts = [];
+
+        // Function to set chart colors based on current theme
+        function updateChartTheme() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(22, 22, 22, 0.7)';
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 22, 22, 0.1)';
+            
+            Chart.defaults.color = textColor;
+            Chart.defaults.font.family = "'Manrope', sans-serif";
+            
+            myCharts.forEach(chart => {
+                if (chart.options.scales) {
+                    if (chart.options.scales.x) {
+                        chart.options.scales.x.ticks.color = textColor;
+                        chart.options.scales.x.grid.color = gridColor;
+                    }
+                    if (chart.options.scales.y) {
+                        chart.options.scales.y.ticks.color = textColor;
+                        chart.options.scales.y.grid.color = gridColor;
+                    }
+                }
+                chart.update();
+            });
+        }
+
+        // Theme Toggle
+        document.getElementById('color-switcher').addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const newTheme = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            updateChartTheme(); // Update charts when theme changes
+        });
+
+        // Mobile Sidebar Toggle
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+        
+        document.querySelector('.open-sidebar').addEventListener('click', toggleSidebar);
+        document.querySelector('.close-sidebar').addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Init Charts & Animations
+        window.addEventListener('load', () => {
+            // GSAP Entry Animations
+            gsap.to('.anim-fade-up', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' });
+            gsap.to('.anim-card', { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.05 });
+
+            // Chart Colors
+            const purple = '#8b5cf6';
+            const blue = '#3b82f6';
+            const green = '#10b981';
+            const orange = '#f59e0b';
+            
+            // Set initial defaults before creating charts
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            Chart.defaults.color = isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(22, 22, 22, 0.7)';
+            Chart.defaults.font.family = "'Manrope', sans-serif";
+
+            // 1. Project Bar Chart
+            const ctxBar = document.getElementById('projectBarChart').getContext('2d');
+            const barChart = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['E-Commerce App', 'Logistics Platform', 'Banking UI/UX'],
+                    datasets: [{
+                        label: 'Completion %',
+                        data: [85, 45, 15],
+                        backgroundColor: [purple, blue, orange],
+                        borderRadius: 8,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(22, 22, 22, 0.9)',
+                            padding: 12,
+                            titleFont: { size: 14, family: "'Manrope', sans-serif" },
+                            bodyFont: { size: 13, family: "'Manrope', sans-serif" },
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) { return context.parsed.y + '% Completed'; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 22, 22, 0.1)',
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false }
+                        }
+                    }
+                }
+            });
+            myCharts.push(barChart);
+
+            // 2. Task Doughnut Chart
+            const ctxPie = document.getElementById('taskPieChart').getContext('2d');
+            const pieChart = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Completed', 'In Progress', 'To Do'],
+                    datasets: [{
+                        data: [45, 25, 30],
+                        backgroundColor: [green, purple, 'rgba(128,128,128,0.2)'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        animateScale: true
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(22, 22, 22, 0.9)',
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                }
+            });
+            myCharts.push(pieChart);
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // 1. Initial Loader & Entrance Animation
+        const initTl = gsap.timeline();
+
+        function playIntro() {
+            if (document.body.dataset.introPlayed) return;
+            document.body.dataset.introPlayed = true;
+
+            initTl.to('#loader', { 
+                opacity: 0, duration: 0.8, delay: 2, ease: "power2.inOut", 
+                onComplete: () => {
+                    const ldr = document.getElementById('loader');
+                    if (ldr) {
+                        ldr.style.display = 'none';
+                        ldr.style.pointerEvents = 'none';
+                    }
+                } 
+            })
+            .to('.anim-fade-up', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.1 }, "-=0.3");
+        }
+
+        // Trigger loader
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(playIntro, 1);
+        } else {
+            document.addEventListener('DOMContentLoaded', playIntro);
+        }
+        window.addEventListener('load', playIntro);
+        setTimeout(playIntro, 2500); // Safety timeout
+    </script>
+</body>
+</html>

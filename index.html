@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <title>Stackly - Innovative IT Solutions | Salem</title>
+    <meta name="description" content="Elevate your digital presence with Stackly - a cutting-edge IT company based in Salem.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Bootstrap Grid -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-grid.min.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           CSS VARIABLES & RESET
+           ========================================== */
+        :root {
+            --base: #161616;
+            --base-opp: #FAF7F6;
+            --base-tint: #F3F1F0;
+            --accent: #d2c4e8;
+            --additional: #e0eed5;
+            --font-main: 'Manrope', sans-serif;
+            --radius-l: 24px;
+            --radius-pill: 100px;
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="dark"] {
+            --base: #FAF7F6;
+            --base-opp: #161616;
+            --base-tint: #222222;
+            --accent: #5c4b75;
+            --additional: #4b5e3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--base-opp);
+            color: var(--base);
+            line-height: 1.5;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul { list-style: none; }
+        
+        img, video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==========================================
+           TYPOGRAPHY & UTILITIES
+           ========================================== */
+        h1, h2, h3, .mxd-section-title__title {
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: clamp(3rem, 8vw, 6rem); }
+        h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        
+        .t-large { font-size: clamp(1.25rem, 2vw, 1.75rem); line-height: 1.4; }
+        .t-140 { font-size: 1.25rem; font-weight: 600; }
+        .t-bright { opacity: 0.9; }
+        .t-muted { opacity: 0.6; }
+        .t-xsmall { font-size: 0.875rem; }
+
+        .bg-base-tint { background-color: var(--base-tint); }
+        .bg-accent { background-color: var(--accent); }
+        .bg-additional { background-color: var(--additional); }
+        .bg-base-opp { background-color: var(--base); color: var(--base-opp); }
+        .bg-base-opp p { color: var(--base-opp); }
+        
+        .radius-l { border-radius: var(--radius-l); }
+        .padding-4 { padding: 3rem; }
+
+        .mxd-section { padding: 5rem 0; }
+        .mxd-container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        
+        /* ==========================================
+           LOADER
+           ========================================== */
+        .loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #141218;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .iconLoaderProgress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotateLoader 2s linear infinite;
+            position: relative;
+            width: 240px; height: 240px;
+        }
+
+        .iconLoaderProgress svg {
+            stroke-width: 16px;
+            fill: none;
+            transform-origin: center;
+            z-index: 999;
+            position: absolute;
+        }
+
+        .iconLoaderProgressFirst circle {
+            animation: circleFirst 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628;
+            stroke-dashoffset: 0;
+            stroke: #7c57f4;
+            stroke-linecap: round;
+        }
+
+        .iconLoaderProgressSecond {
+            transform: rotate(-14deg);
+        }
+
+        .iconLoaderProgressSecond circle {
+            animation: circleSecond 3s ease-in-out infinite;
+            stroke-dasharray: 628, 628;
+            stroke-dashoffset: 0;
+            stroke: #bfb2f7;
+            stroke-linecap: round;
+        }
+
+        @keyframes circleFirst { from, to { stroke-dashoffset: 50; } 50% { stroke-dashoffset: 625; } }
+        @keyframes circleSecond { from, to { stroke-dashoffset: -625; } 50% { stroke-dashoffset: -50; } }
+        @keyframes rotateLoader { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ==========================================
+           HEADER & NAVIGATION
+           ========================================== */
+        .mxd-header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1001;
+            background: var(--base-opp);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+        
+        .mxd-header__logo .mxd-logo {
+            display: flex; align-items: center; gap: 15px;
+            font-weight: 800; font-size: 1.4rem; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--base);
+        }
+        
+        .mxd-header__controls {
+            display: flex; align-items: center; gap: 20px;
+        }
+
+        .mxd-color-switcher {
+            background: transparent; border: 2px solid var(--base);
+            width: 44px; height: 24px; border-radius: 20px;
+            position: relative; cursor: pointer;
+            transition: border-color 0.4s ease;
+        }
+        .mxd-color-switcher::after {
+            content: ''; position: absolute; top: 2px; left: 2px;
+            width: 16px; height: 16px; background: var(--base); border-radius: 50%;
+            transition: transform 0.3s, background-color 0.4s ease;
+        }
+        [data-theme="dark"] .mxd-color-switcher::after { transform: translateX(20px); }
+
+        .mxd-nav__hamburger {
+            position: relative;
+            width: 50px; height: 50px;
+            background: var(--base); border-radius: 50%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            gap: 6px; cursor: pointer; border: none;
+            transition: background-color 0.4s ease;
+        }
+        .mxd-nav__hamburger .hamburger__line {
+            width: 20px; height: 2px; background: var(--base-opp);
+            transition: var(--transition-smooth);
+        }
+        .mxd-nav__hamburger.is-active .hamburger__line:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .mxd-nav__hamburger.is-active .hamburger__line:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+        .mxd-menu__wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--base-opp);
+            z-index: 1000;
+            opacity: 0; visibility: hidden;
+            display: flex; align-items: center; justify-content: center;
+            padding-top: 80px; /* Offset for header */
+        }
+        
+        .mxd-menu__contain {
+            width: 100%; max-width: 1200px; padding: 0 40px;
+        }
+        
+        .main-menu__accordion { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1; }
+        .main-menu__link { 
+            display: block; overflow: hidden; height: 1.3em;
+            text-decoration: none; color: var(--base);
+            margin-bottom: 0.5rem;
+        }
+        .menu-text-wrapper {
+            display: block; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .main-menu__item { display: block; line-height: 1.3em; height: 1.3em; }
+        .main-menu__link:hover .menu-text-wrapper { transform: translateY(-1.3em); }
+        .hover-text { color: #8b5cf6; }
+
+        /* ==========================================
+           BUTTONS & TAGS
+           ========================================== */
+        .btn {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 24px; border-radius: var(--radius-pill);
+            font-weight: 600; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden; z-index: 1;
+        }
+        .btn i { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .btn:hover i.ph-arrow-up-right { transform: translate(4px, -4px); }
+        
+        .btn-outline { border: 1px solid var(--base); color: var(--base); background: transparent; }
+        .btn-outline::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--base); z-index: -1;
+            transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-outline:hover { color: var(--base-opp); }
+        .btn-outline:hover::before { transform: scaleY(1); }
+        
+        .btn-violet {
+            background-color: #8b5cf6; color: #ffffff; border: none;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.2);
+        }
+        .btn-violet::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #7c3aed; z-index: -1;
+            transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-violet:hover { color: #ffffff; transform: translateY(-4px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); }
+        .btn-violet:hover::before { transform: scaleY(1); }
+        
+        .tag {
+            display: inline-block; padding: 6px 14px;
+            border-radius: var(--radius-pill); font-size: 0.875rem;
+            font-weight: 600; margin-right: 8px; margin-bottom: 8px;
+        }
+        .tag-outline { border: 1px solid rgba(0,0,0,0.2); }
+        .tag-outline-opposite { border: 1px solid rgba(255,255,255,0.2); }
+        .tag-permanent { background: #fff; color: #000; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* ==========================================
+           PREMIUM HERO STYLES
+           ========================================== */
+        .premium-hero {
+            position: relative; 
+            min-height: 100vh; /* Changed from height to min-height to prevent overlap */
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; 
+            padding-top: 140px; /* Increased to clear the fixed header */
+            padding-bottom: 100px; /* Added space before the video section */
+        }
+        .hero-title-wrapper { 
+            text-align: center; 
+            z-index: 5; 
+            position: relative; 
+            pointer-events: none; 
+            max-width: 900px;
+        }
+
+        .hero-title-wrapper { 
+            text-align: center; 
+            z-index: 5; 
+            position: relative; 
+            pointer-events: none; 
+        }
+
+        @media (max-width: 992px) {
+            .premium-hero { flex-direction: column; }
+            .hero-title-wrapper { order: 1; }
+            .interactive-robot { position: relative; right: 0; top: 0; order: 2; margin: 2rem 0; }
+        }
+        .hero-title-line { overflow: hidden; line-height: 1.1; }
+        .ht-text {
+            display: inline-block; font-size: clamp(3.5rem, 10vw, 9rem);
+            font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase;
+            will-change: transform;
+        }
+        
+        .hero-video-wrapper {
+            padding: 0 20px; margin-top: -80px; position: relative; z-index: 3; margin-bottom: 5rem;
+        }
+        .hero-video-inner {
+            width: 60%; margin: 0 auto; border-radius: 40px; overflow: hidden;
+            will-change: width, border-radius; box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        .hero-video-inner img { width: 100%; height: 75vh; object-fit: cover; }
+
+        /* ==========================================
+           INTERACTIVE ROBOT (EVA)
+           ========================================== */
+        .interactive-robot {
+            position: absolute; right: 5%; top: 15%;
+            z-index: 1; pointer-events: none;
+            will-change: transform;
+        }
+        .robot-parallax-wrapper {
+            will-change: transform;
+        }
+        .modelViewPort {
+            /* The black circle background around the model*/
+            perspective: 1000px;
+            width: 20rem;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        }
+        .eva {
+            --EVA-ROTATION-DURATION: 4s;
+            transform-style: preserve-3d;
+            animation: rotateRight var(--EVA-ROTATION-DURATION) linear infinite alternate;
+        }
+        .head {
+            position: relative;
+            width: 6rem;
+            height: 4rem;
+            border-radius: 48% 53% 45% 55% / 79% 79% 20% 22%;
+            background: linear-gradient(to right, white 45%, gray);
+        }
+        .eyeChamber {
+            width: 4.5rem;
+            height: 2.75rem;
+            position: relative;
+            left: 50%;
+            top: 55%;
+            border-radius: 45% 53% 45% 48% / 62% 59% 35% 34%;
+            background-color: #0c203c;
+            box-shadow: 0px 0px 2px 2px white, inset 0px 0px 0px 2px black;
+            transform: translate(-50%, -50%);
+            animation: moveRight var(--EVA-ROTATION-DURATION) linear infinite alternate;
+        }
+        .eye {
+            width: 1.2rem;
+            height: 1.5rem;
+            position: absolute;
+            border-radius: 50%;
+        }
+        .eye:first-child {
+            left: 12px;
+            top: 50%;
+            background: repeating-linear-gradient(
+                65deg,
+                #9bdaeb 0px,
+                #9bdaeb 1px,
+                white 2px
+            );
+            box-shadow: inset 0px 0px 5px #04b8d5, 0px 0px 15px 1px #0bdaeb;
+            transform: translate(0, -50%) rotate(-65deg);
+        }
+        .eye:nth-child(2) {
+            right: 12px;
+            top: 50%;
+            background: repeating-linear-gradient(
+                -65deg,
+                #9bdaeb 0px,
+                #9bdaeb 1px,
+                white 2px
+            );
+            box-shadow: inset 0px 0px 5px #04b8d5, 0px 0px 15px 1px #0bdaeb;
+            transform: translate(0, -50%) rotate(65deg);
+        }
+        .body {
+            width: 6rem;
+            height: 8rem;
+            position: relative;
+            margin-block-start: 0.25rem;
+            border-radius: 47% 53% 45% 55% / 12% 9% 90% 88%;
+            background: linear-gradient(to right, white 35%, gray);
+        }
+        .hand {
+            position: absolute;
+            left: -1.5rem;
+            top: 0.75rem;
+            width: 2rem;
+            height: 5.5rem;
+            border-radius: 40%;
+            background: linear-gradient(to left, white 15%, gray);
+            box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.25);
+            transform: rotateY(55deg) rotateZ(10deg);
+        }
+        .hand:first-child {
+            animation: compensateRotation var(--EVA-ROTATION-DURATION) linear infinite alternate;
+        }
+        .hand:nth-child(2) {
+            left: 92%;
+            background: linear-gradient(to right, white 15%, gray);
+            transform: rotateY(55deg) rotateZ(-10deg);
+            animation: compensateRotationRight var(--EVA-ROTATION-DURATION) linear infinite alternate;
+        }
+        .scannerThing {
+            width: 0;
+            height: 0;
+            position: absolute;
+            left: 60%;
+            top: 10%;
+            border-bottom: 250px solid rgba(155, 218, 235, 0.5);
+            border-left: 120px solid transparent;
+            border-right: 120px solid transparent;
+            transform-origin: top center;
+            margin-left: -120px; 
+            mask: linear-gradient(to bottom, white, transparent 80%);
+            -webkit-mask: linear-gradient(to bottom, white, transparent 80%);
+            pointer-events: none;
+            opacity: 0.8; /* Constant opacity, removed fading animation */
+        }
+        .scannerOrigin {
+            position: absolute;
+            width: 8px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            left: 60%;
+            top: 10%;
+            background: #9bdaeb;
+            box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+            animation: moveRight var(--EVA-ROTATION-DURATION) linear infinite;
+        }
+        @keyframes rotateRight {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(25deg); }
+        }
+        @keyframes moveRight {
+            from { transform: translate(-50%, -50%); }
+            to { transform: translate(-40%, -50%); }
+        }
+        @keyframes compensateRotation {
+            from { transform: rotateY(55deg) rotateZ(10deg); }
+            to { transform: rotatey(30deg) rotateZ(10deg); }
+        }
+        @keyframes compensateRotationRight {
+            from { transform: rotateY(55deg) rotateZ(-10deg); }
+            to { transform: rotateY(70deg) rotateZ(-10deg); }
+        }
+        @keyframes glowOpacity {
+            from { opacity: 0; }
+            20% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* ==========================================
+           TEXT MARQUEE
+           ========================================== */
+        .text-marquee-section {
+            overflow: hidden;
+            width: 100%;
+            padding: 4rem 0 2rem 0;
+            user-select: none;
+        }
+        .text-marquee-track {
+            display: flex;
+            width: fit-content;
+            animation: textMarqueeScroll 20s linear infinite;
+        }
+        .text-marquee-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding-right: 3rem;
+        }
+        .text-marquee-content span {
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 600;
+            color: var(--base);
+            opacity: 0.15;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+        .star-icon {
+            width: clamp(2.5rem, 5vw, 4.5rem);
+            height: clamp(2.5rem, 5vw, 4.5rem);
+            color: var(--base);
+            opacity: 0.15;
+        }
+        @keyframes textMarqueeScroll {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        /* ==========================================
+           SERVICES BENTO GRID
+           ========================================== */
+        .mxd-services-cards-s__inner {
+            height: 100%; display: flex; flex-direction: column;
+            position: relative; min-height: 420px; gap: 2rem;
+            border-radius: var(--radius-l); padding: 2.5rem;
+            overflow: hidden;
+        }
+        .mxd-services-cards-s__title { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; z-index: 2; position: relative; }
+        .service-content-wrap { flex-grow: 1; display: flex; flex-direction: column; z-index: 2; position: relative; }
+        .service-content { width: 100%; margin-bottom: 1rem; }
+        
+        .mxd-services-cards-s__image {
+            width: 100%; height: 200px;
+            border-radius: 16px; 
+            z-index: 1; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: auto; /* Pushes image strictly to the bottom */
+        }
+        .mxd-services-cards-s__image img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .mxd-services-cards-s__inner:hover .mxd-services-cards-s__image img { 
+            transform: scale(1.08); 
+        }
+
+        /* Specific modifications for image positioning */
+        .img-top-wrapper { margin-top: 0; margin-bottom: auto; }
+        .card-img-top { flex-direction: column-reverse; }
+
+        @media (min-width: 992px) {
+            .big-card { flex-direction: row; align-items: center; }
+            .big-card .service-content-wrap { width: 50%; padding-right: 2rem; margin-bottom: 0; }
+            .big-card .mxd-services-cards-s__image { width: 50%; height: 320px; margin-top: 0; }
+        }
+
+        /* ==========================================
+           CAPABILITIES / LIST
+           ========================================== */
+        .mxd-cpb-list__item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 2rem 0; border-top: 1px solid rgba(0,0,0,0.1);
+            position: relative; cursor: pointer;
+        }
+        [data-theme="dark"] .mxd-cpb-list__item { border-color: rgba(255,255,255,0.1); }
+        .mxd-cpb-list__title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 700; transition: var(--transition-smooth); }
+        .mxd-cpb-list__item:hover .mxd-cpb-list__title { transform: translateX(20px); color: var(--primary); }
+        .mxd-cpb-list__num { font-size: 1.2rem; opacity: 0.5; }
+        .mxd-cpb-list__image {
+            position: absolute; right: 10%; top: 50%; transform: translateY(-50%) scale(0.8);
+            width: 300px; height: 200px; border-radius: 12px; overflow: hidden;
+            opacity: 0; pointer-events: none; transition: var(--transition-smooth); z-index: 10;
+        }
+        .mxd-cpb-list__image img { width: 100%; height: 100%; object-fit: cover; }
+        .mxd-cpb-list__item:hover .mxd-cpb-list__image { opacity: 1; transform: translateY(-50%) scale(1); }
+
+        /* ==========================================
+           CASE STUDIES
+           ========================================== */
+        .mxd-pinned-projects__static { position: sticky; top: 120px; height: fit-content; padding-right: 2rem; }
+        .mxd-project-item { margin-bottom: 4rem; }
+        .mxd-project-item__preview {
+            width: 100%; height: clamp(300px, 40vw, 500px); background-size: cover; background-position: center;
+            border-radius: 24px; margin-bottom: 1.5rem; transition: transform 0.6s ease;
+        }
+        .mxd-project-item__media:hover .mxd-project-item__preview { transform: scale(0.98); }
+        .mxd-project-item__tags { position: absolute; top: 20px; left: 20px; }
+        .mxd-project-item__media { position: relative; display: block; overflow: hidden; border-radius: 24px; }
+        .mxd-project-item__name { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; }
+        .mxd-project-item__name span { color: var(--primary); }
+
+        /* ==========================================
+           TECH STACK
+           ========================================== */
+        .mxd-tech-stack-cards__inner {
+            background: var(--base-tint); padding: 2.5rem; border-radius: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; transition: var(--transition-smooth);
+        }
+        .mxd-tech-stack-cards__inner:hover { transform: translateY(-10px); background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        [data-theme="dark"] .mxd-tech-stack-cards__inner:hover { background: #333; }
+        .mxd-tech-stack-cards__logo svg { width: 60px; height: 60px; margin-bottom: 1rem; fill: currentColor; }
+
+        /* ==========================================
+           STATS
+           ========================================== */
+        .mxd-stats-simple__inner { text-align: center; padding: 2rem; }
+        .mxd-stats-simple__counter { 
+            font-size: clamp(2.5rem, 6vw, 5rem); 
+            font-weight: 800; line-height: 1; margin-bottom: 1rem; 
+        }
+
+        /* ==========================================
+           CTA & FOOTER
+           ========================================== */
+        .mxd-promo__inner {
+            background: var(--base); color: var(--base-opp);
+            border-radius: 30px; padding: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 4rem); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .mxd-promo__caption { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; }
+        
+        .btn-additional { background: var(--additional); color: var(--base); border: none; }
+        .btn-additional::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; z-index: -1;
+            transform: scaleY(0); transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-additional:hover { color: var(--base); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-additional:hover::before { transform: scaleY(1); }
+
+        .mxd-footer { padding: 5rem 0 2rem; }
+        .footer-blocks__card { padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%; }
+        .footer-nav__item { margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600; cursor: pointer; }
+        .footer-nav__item:hover { text-decoration: underline; }
+        .footer-blocks__title-m { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+        .form-light input { 
+            width: 100%; padding: 15px 20px; border-radius: 30px; 
+            border: 1px solid rgba(0,0,0,0.1); background: transparent; 
+            margin-bottom: 10px; font-family: inherit; color: inherit;
+        }
+        .btn-form { width: 100%; justify-content: center; background: var(--base); color: var(--base-opp); border: 1px solid var(--base); }
+        .btn-form:hover { background: transparent; color: var(--base); }
+
+        /* ==========================================
+           RESPONSIVE ADJUSTMENTS
+           ========================================== */
+        @media (max-width: 991px) {
+            .padding-4 { padding: 2rem; }
+            .mxd-services-cards-s__inner { padding: 2rem; min-height: auto; flex-direction: column; }
+            .big-card .service-content-wrap { width: 100%; }
+            
+            .mxd-services-cards-s__image,
+            .img-big-right, .img-top-right, .img-bottom-right, .img-bottom-center {
+                position: relative;
+                top: auto; right: auto; bottom: auto; left: auto;
+                width: 100% !important; 
+                height: 250px !important;
+                transform: none !important;
+                margin-top: 2rem;
+                border-radius: 16px;
+            }
+            .mxd-services-cards-s__inner:hover .mxd-services-cards-s__image { transform: none !important; }
+            .mxd-cpb-list__image { display: none; } 
+            
+            /* Robot Tablet Fix - Put in document flow, compensate for scale empty space */
+            .premium-hero { flex-direction: column; justify-content: center; padding-top: 120px; }
+            .interactive-robot { 
+                position: relative; 
+                right: auto; top: auto; left: auto;
+                transform: scale(0.85); 
+                margin: -24px auto 10px auto; /* Fix: positive bottom margin to keep text away */
+                transform-origin: center center; 
+                opacity: 1; z-index: 10; 
+            }
+            .hero-title-wrapper { margin-top: 0; z-index: 5; }
+        }
+        
+        @media (max-width: 768px) {
+            .mxd-header { padding: 15px 20px; }
+            .mxd-header__controls { gap: 10px; }
+            .mxd-nav__hamburger { width: 42px; height: 42px; }
+            .btn-say-hello { padding: 8px 14px; font-size: 0.85rem; }
+            
+            .premium-hero { padding-top: 100px; padding-bottom: 80px; }
+            
+            /* Robot Mobile Fix - Exact math to fix overlap */
+            .interactive-robot { 
+                transform: scale(0.7); 
+                margin: -48px auto 10px auto; /* Fix: positive bottom margin */
+            }
+            
+            .hero-video-inner { width: 95%; height: 40vh; border-radius: 20px; }
+            .hero-video-wrapper { margin-top: 0px; }
+            .mxd-pinned-projects__static { position: relative; top: 0; padding-right: 0; margin-bottom: 2rem; }
+            
+            .mxd-stats-simple__inner { padding: 1.5rem 1rem; }
+            .mxd-menu__contain { padding: 0 20px; text-align: center; }
+            .mxd-menu__contain .col-md-6 { margin-bottom: 2rem; }
+        }
+
+        @media (max-width: 576px) {
+            .mxd-header { padding: 12px 10px; }
+            .mxd-header__logo .mxd-logo { font-size: 1rem; gap: 6px; }
+            .mxd-header__logo svg { width: 20px; height: 20px; }
+            .mxd-header__controls { gap: 6px; }
+            .btn-say-hello { padding: 6px 10px; font-size: 0.75rem; }
+            .btn-say-hello i { display: none; } /* Hides just the arrow icon to save space */
+            .mxd-nav__hamburger { width: 38px; height: 38px; }
+            .mxd-color-switcher { width: 38px; height: 22px; }
+            .mxd-color-switcher::after { width: 14px; height: 14px; top: 2px; left: 2px; }
+            [data-theme="dark"] .mxd-color-switcher::after { transform: translateX(16px); }
+            
+            .premium-hero { padding-top: 90px; padding-bottom: 60px; }
+            .ht-text { font-size: clamp(2.8rem, 11vw, 4.5rem); } 
+            
+            /* Robot Small Mobile Fix - Deep negative top margin, clean positive bottom margin */
+            .interactive-robot { 
+                transform: scale(0.55); 
+                margin: -72px auto 0px auto; 
+            }
+        }
+
+        /* Base GSAP Anim Setup */
+        .anim-uni-in-up, .anim-uni-scale-in { visibility: hidden; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <figure class="iconLoaderProgress">
+            <svg class="iconLoaderProgressFirst" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+            <svg class="iconLoaderProgressSecond" width="240" height="240">
+                <circle cx="120" cy="120" r="100"></circle>
+            </svg>
+        </figure>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <nav class="mxd-menu__wrapper">
+        <div class="mxd-menu__contain row w-100 align-items-center">
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center text-center text-md-start">
+                <p class="t-large mb-4">👋 Nice to see you!<br>We are Stackly, a digital agency based in Salem, Tamil Nadu.</p>
+                <p class="t-xsmall t-muted">hello@stackly.in <br> +91 98765 43210</p>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-end mt-5 mt-md-0">
+                <ul class="main-menu__accordion text-center text-md-end">
+                    <li>
+                        <a href="index.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Home</span>
+                                <span class="main-menu__item hover-text">Home</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">About</span>
+                                <span class="main-menu__item hover-text">About</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="services.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Services</span>
+                                <span class="main-menu__item hover-text">Services</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="blog.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Blog</span>
+                                <span class="main-menu__item hover-text">Blog</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contact.html" class="main-menu__link nav-link-click">
+                            <div class="menu-text-wrapper">
+                                <span class="main-menu__item">Contact</span>
+                                <span class="main-menu__item hover-text">Contact</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="mxd-header">
+        <div class="mxd-header__logo">
+            <a href="index.html" class="mxd-logo">
+                <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
+            </a>
+        </div>
+        <div class="mxd-header__controls">
+            <button id="color-switcher" class="mxd-color-switcher" type="button" aria-label="Toggle Dark Mode"></button>
+            <a class="btn btn-outline btn-say-hello" href="./login.html">
+                Login <i class="ph-bold ph-arrow-up-right"></i>
+            </a>
+            <button class="mxd-nav__hamburger" aria-label="Menu">
+                <div class="hamburger__line"></div>
+                <div class="hamburger__line"></div>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="premium-hero">
+            
+            <!-- Interactive Robot -->
+            <div class="interactive-robot">
+                <div class="robot-parallax-wrapper">
+                    <div class="modelViewPort">
+                        <div class="eva">
+                            <div class="head">
+                                <div class="eyeChamber">
+                                    <div class="eye"></div>
+                                    <div class="eye"></div>
+                                </div>
+                            </div>
+                            <div class="body">
+                                <div class="hand"></div>
+                                <div class="hand"></div>
+                                <div class="scannerThing"></div>
+                                <div class="scannerOrigin"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-title-wrapper">
+                <div class="hero-title-line"><span class="ht-text">Elevating</span></div>
+                <div class="hero-title-line"><span class="ht-text">Digital</span></div>
+                <div class="hero-title-line"><span class="ht-text" style="color: #8b5cf6;">Excellence.</span></div>
+                <p class="t-large mt-4 ht-subtext px-3" style="max-width: 600px; margin-inline: auto; color: var(--base);">Stackly delivers cutting-edge software and premium design solutions from Salem to the world.</p>
+                <div class="hero-btn-wrap mt-5">
+                    <a href="404.html" class="btn btn-violet" style="padding: 16px 36px; font-size: 1.15rem;">
+                        Explore Solutions <i class="ph-bold ph-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expanding Hero Video/Image -->
+        <section class="hero-video-wrapper">
+            <div class="hero-video-inner">
+                <img src="images/Image_for_web_202603251801.webp" alt="Stackly Workspace">
+            </div>
+        </section>
+
+        <!-- Text Marquee Section -->
+        <section class="text-marquee-section">
+            <div class="text-marquee-track">
+                <div class="text-marquee-content">
+                    <span>Design</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                    <span>Development</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                    <span>Branding</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                    <span>eCommerce</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                </div>
+                <!-- Duplicate for seamless scroll -->
+                <div class="text-marquee-content" aria-hidden="true">
+                    <span>Design</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                    <span>Development</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                    <span>Branding</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                    <span>eCommerce</span>
+                    <svg class="star-icon" viewBox="0 0 80 80" fill="currentColor">
+                        <path d="M78.4,38.4c0,0-11.8,0-15.8,0c-1.6,0-4.8-0.2-7.1-0.8c-2.3-0.6-4.3-0.8-6.3-2.4c-2-1.2-3.5-3.2-4.7-4.8 c-1.2-1.6-1.6-3.6-2-5.5c-0.3-1.5-0.7-4.3-0.8-5.9c-0.2-4.3,0-17.4,0-17.4C41.8,0.8,41,0,40.2,0s-1.6,0.8-1.6,1.6c0,0,0,13.1,0,17.4 c0,1.6-0.6,4.3-0.8,5.9c-0.3,2-0.8,4-2,5.5c-1.2,2-2.8,3.6-4.7,4.8s-4,1.8-6.3,2.4c-1.9,0.5-4.7,0.6-6.7,0.8c-3.9,0.4-16.6,0-16.6,0 C0.8,38.4,0,39.2,0,40c0,0.8,0.8,1.6,1.6,1.6c0,0,12.2,0,16.6,0c1.6,0,4.8,0.3,6.7,0.8c2.3,0.6,4.3,0.8,6.3,2.4 c1.6,1.2,3.2,2.8,4.3,4.4c1.2,2,2.1,3.9,2.4,6.3c0.2,1.7,0.7,4.7,0.8,6.7c0.2,4,0,16.2,0,16.2c0,0.8,0.8,1.6,1.6,1.6 s1.6-0.8,1.6-1.6c0,0,0-12.3,0-16.2c0-1.6,0.5-5.1,0.8-6.7c0.5-2.3,0.8-4.4,2.4-6.3c1.2-1.6,2.8-3.2,4.3-4.4c2-1.2,3.9-2,6.3-2.4 c1.8-0.3,5.1-0.7,7.1-0.8c3.5-0.2,15.8,0,15.8,0c0.8,0,1.6-0.8,1.6-1.6C80,39.2,79.2,38.4,78.4,38.4C78.4,38.4,78.4,38.4,78.4,38.4z"></path>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Bento Grid -->
+        <section class="mxd-section" id="services">
+            <div class="mxd-container">
+                <div class="row g-4">
+                    <!-- Service 1 -->
+                    <div class="col-12 col-xl-8 anim-uni-scale-in">
+                        <div class="mxd-services-cards-s__inner big-card bg-base-tint">
+                            <div class="service-content-wrap">
+                                <div class="mxd-services-cards-s__title">
+                                    <p>AI-powered<br>solutions</p>
+                                </div>
+                                <div class="service-content">
+                                    <div class="mb-3">
+                                        <span class="tag tag-outline">UI/UX</span>
+                                        <span class="tag tag-outline">Web design</span>
+                                        <span class="tag tag-outline">Machine Learning</span>
+                                    </div>
+                                    <p class="t-muted">Intelligent automation, predictive analytics, and machine learning-driven applications built natively.</p>
+                                </div>
+                            </div>
+                            <div class="mxd-services-cards-s__image">
+                                <img src="images/AI_robot_using_202603251801.webp" alt="AI">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="col-12 col-md-6 col-xl-4 anim-uni-scale-in">
+                        <div class="mxd-services-cards-s__inner card-img-top bg-accent">
+                            <div class="service-content-wrap">
+                                <div class="mxd-services-cards-s__title"><p>Fintech</p></div>
+                                <div class="service-content">
+                                    <div class="mb-3">
+                                        <span class="tag tag-outline" style="border-color: rgba(0,0,0,0.1)">Frontend</span>
+                                        <span class="tag tag-outline" style="border-color: rgba(0,0,0,0.1)">Backend</span>
+                                    </div>
+                                    <p class="t-muted">Innovative financial solutions, from digital banking to payment processing.</p>
+                                </div>
+                            </div>
+                            <div class="mxd-services-cards-s__image img-top-wrapper">
+                                <img src="images/pexels-morningtrain-18105.webp" alt="Fintech">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="col-12 col-md-6 col-xl-4 anim-uni-scale-in">
+                        <div class="mxd-services-cards-s__inner bg-additional">
+                            <div class="service-content-wrap">
+                                <div class="mxd-services-cards-s__title"><p>SaaS Dev</p></div>
+                                <div class="service-content">
+                                    <div class="mb-3">
+                                        <span class="tag tag-outline">Strategy</span>
+                                        <span class="tag tag-outline">Cloud</span>
+                                    </div>
+                                    <p class="t-muted">Scalable cloud applications ensuring high performance and security.</p>
+                                </div>
+                            </div>
+                            <div class="mxd-services-cards-s__image">
+                                <img src="images/pexels-canvy-mockups-56805-205316.webp" alt="SaaS">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Service 4 -->
+                    <div class="col-12 col-md-6 col-xl-4 anim-uni-scale-in">
+                        <div class="mxd-services-cards-s__inner bg-base-opp">
+                            <div class="service-content-wrap">
+                                <div class="mxd-services-cards-s__title"><p>Cybersecurity</p></div>
+                                <div class="service-content">
+                                    <div class="mb-3">
+                                        <span class="tag tag-outline-opposite" style="color:#fff">Audits</span>
+                                        <span class="tag tag-outline-opposite" style="color:#fff">Protection</span>
+                                    </div>
+                                    <p style="color: rgba(255,255,255,0.7)">Advanced threat detection, encryption solutions, and secure data protection.</p>
+                                </div>
+                            </div>
+                            <div class="mxd-services-cards-s__image">
+                                <img src="images/pexels-pixabay-159394.webp" alt="Cyber Security">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Service 5 -->
+                    <div class="col-12 col-md-6 col-xl-4 anim-uni-scale-in">
+                        <div class="mxd-services-cards-s__inner bg-base-tint">
+                            <div class="service-content-wrap">
+                                <div class="mxd-services-cards-s__title"><p>Mobile Apps</p></div>
+                                <div class="service-content">
+                                    <div class="mb-3">
+                                        <span class="tag tag-outline">iOS</span>
+                                        <span class="tag tag-outline">Android</span>
+                                    </div>
+                                    <p class="t-muted">Native and cross-platform mobile experiences that users love.</p>
+                                </div>
+                            </div>
+                            <div class="mxd-services-cards-s__image">
+                                <img src="images/pexels-pixabay-159394.webp" alt="Mobile">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Text & List -->
+        <section class="mxd-section">
+            <div class="mxd-container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-xl-5 mb-5 mb-xl-0">
+                        <h2 class="anim-uni-in-up">Always on-trend creatives</h2>
+                    </div>
+                    <div class="col-12 col-xl-6 offset-xl-1">
+                        <p class="t-large mb-5 anim-uni-in-up">From pixel-perfect designs to flawless code, every aspect of our projects is crafted with care to ensure the highest standards of quality from our Salem HQ.</p>
+                        <div class="row mb-5">
+                            <div class="col-6">
+                                <ul class="t-140">
+                                    <li class="anim-uni-in-up mb-2">Innovations</li>
+                                    <li class="anim-uni-in-up mb-2">Excellence</li>
+                                    <li class="anim-uni-in-up mb-2">Creativity</li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="t-140">
+                                    <li class="anim-uni-in-up mb-2">Experience</li>
+                                    <li class="anim-uni-in-up mb-2">Competence</li>
+                                    <li class="anim-uni-in-up mb-2">Passion</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a class="btn btn-outline anim-uni-in-up" href="404.html">
+                            Let's Meet Closer <i class="ph-bold ph-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Studies -->
+        <section class="mxd-section" id="works">
+            <div class="mxd-container">
+                <div class="row">
+                    <div class="col-12 col-xl-5 mxd-pinned-projects__static">
+                        <h2 class="anim-uni-in-up mb-4">Case studies</h2>
+                        <p class="anim-uni-in-up t-muted mb-5">Explore a selection of projects blending creativity with practical design. We help brands scale digitally.</p>
+                        <a class="btn btn-outline anim-uni-in-up" href="404.html">
+                            All Works <i class="ph-bold ph-arrow-up-right"></i>
+                        </a>
+                    </div>
+                    <div class="col-12 col-xl-7">
+                        <!-- Project 1 -->
+                        <div class="mxd-project-item anim-uni-in-up">
+                            <a class="mxd-project-item__media" href="404.html">
+                                <div class="mxd-project-item__preview" style="background-image: url('images/pexels-divinetechygirl-1181395.webp')"></div>
+                                <div class="mxd-project-item__tags">
+                                    <span class="tag tag-permanent">UI/UX</span>
+                                    <span class="tag tag-permanent">Web</span>
+                                </div>
+                            </a>
+                            <div class="mxd-project-item__name mt-3">
+                                <span>Fintech Dashboard</span> for modern banking
+                            </div>
+                        </div>
+                        <!-- Project 2 -->
+                        <div class="mxd-project-item anim-uni-in-up">
+                            <a class="mxd-project-item__media" href="404.html">
+                                <div class="mxd-project-item__preview" style="background-image: url('images/Image_for_web_202603251801.webp')"></div>
+                                <div class="mxd-project-item__tags">
+                                    <span class="tag tag-permanent">AI</span>
+                                    <span class="tag tag-permanent">Data</span>
+                                </div>
+                            </a>
+                            <div class="mxd-project-item__name mt-3">
+                                <span>AI Analytics Platform</span> data visualization
+                            </div>
+                        </div>
+                        <!-- Project 3 -->
+                        <div class="mxd-project-item anim-uni-in-up">
+                            <a class="mxd-project-item__media" href="404.html">
+                                <div class="mxd-project-item__preview" style="background-image: url('images/pexels-goumbik-574073.webp')"></div>
+                                <div class="mxd-project-item__tags">
+                                    <span class="tag tag-permanent">E-Commerce</span>
+                                    <span class="tag tag-permanent">Mobile App</span>
+                                </div>
+                            </a>
+                            <div class="mxd-project-item__name mt-3">
+                                <span>Global Retail App</span> scalable shopping experience
+                            </div>
+                        </div>
+                        <!-- Project 4 -->
+                        <div class="mxd-project-item anim-uni-in-up">
+                            <a class="mxd-project-item__media" href="404.html">
+                                <div class="mxd-project-item__preview" style="background-image: url('images/pexels-jonathanborba-14263441.webp')"></div>
+                                <div class="mxd-project-item__tags">
+                                    <span class="tag tag-permanent">HealthTech</span>
+                                    <span class="tag tag-permanent">SaaS</span>
+                                </div>
+                            </a>
+                            <div class="mxd-project-item__name mt-3">
+                                <span>Medical Portal</span> patient management system
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section class="mxd-section">
+            <div class="mxd-container">
+                <div class="row">
+                    <div class="col-12 col-xl-4 mb-5 mb-xl-0">
+                        <h2 class="anim-uni-in-up">Our tech<br>stack:</h2>
+                    </div>
+                    <div class="col-12 col-xl-8">
+                        <div class="row g-3">
+                            <!-- React -->
+                            <div class="col-6 col-md-4 anim-uni-scale-in">
+                                <div class="mxd-tech-stack-cards__inner">
+                                    <div class="mxd-tech-stack-cards__logo">
+                                        <svg viewBox="0 0 225.8 201.2"><path d="M185.7,65.2c-2.3-.8-4.8-1.6-7.3-2.3.4-1.7.8-3.3,1.1-5,5.5-26.7,1.9-48.3-10.4-55.3-11.8-6.8-31.1.3-50.5,17.2-1.9,1.6-3.7,3.4-5.6,5.2-1.3-1.2-2.5-2.4-3.7-3.5C88.9,3.4,68.4-4.3,56.2,2.9c-11.8,6.8-15.3,27.1-10.3,52.4.5,2.4,1,4.9,1.7,7.5-2.9.8-5.7,1.7-8.4,2.6C15.3,73.7,0,86.8,0,100.4s16.4,28,41.3,36.6c2,.7,4,1.3,6.1,1.9-.7,2.7-1.3,5.4-1.8,8.1-4.7,24.9-1,44.7,10.7,51.4,12.1,7,32.5-.2,52.3-17.5,1.6-1.4,3.1-2.8,4.7-4.3,2,2,4.1,3.8,6.1,5.6,19.2,16.5,38.2,23.2,49.9,16.4,12.1-7,16.1-28.2,10.9-54.1-.4-2-.8-4-1.4-6,1.4-.4,2.8-.9,4.2-1.3,25.9-8.6,42.8-22.5,42.8-36.6s-15.8-26.8-40.2-35.2h0v-.2h.1ZM112.9,80.2c11.1,0,20.2,9,20.2,20.2s-9,20.2-20.2,20.2-20.2-9-20.2-20.2,9-20.2,20.2-20.2"/></svg>
+                                    </div>
+                                    <p class="t-140">React</p>
+                                </div>
+                            </div>
+                            <!-- Angular -->
+                            <div class="col-6 col-md-4 anim-uni-scale-in">
+                                <div class="mxd-tech-stack-cards__inner">
+                                    <div class="mxd-tech-stack-cards__logo">
+                                        <svg viewBox="0 0 256 272"><path d="M103,143.6l23.3-55.4,26.5,55.4h-49.8ZM255.1,44.7l-20.9,166.4-108.3,60-106.6-59.2L0,45.5,125.9.7l129.2,44ZM208.2,207.2L126.1,32.3,47.7,206.7l29.3-.5,15.7-39.3h70.3l17.2,39.8,28,.5Z"/></svg>
+                                    </div>
+                                    <p class="t-140">Angular</p>
+                                </div>
+                            </div>
+                            <!-- Vue -->
+                            <div class="col-6 col-md-4 anim-uni-scale-in">
+                                <div class="mxd-tech-stack-cards__inner">
+                                    <div class="mxd-tech-stack-cards__logo">
+                                        <svg viewBox="0 0 512 416.2"><path d="M256,96.1L200.5,0h-79.4l134.9,233.7L390.9,0h-79.4l-55.5,96.1ZM409.4,0l-153.4,265.7L102.6,0H15.7l240.3,416.2L496.3,0h-86.9Z"/></svg>
+                                    </div>
+                                    <p class="t-140">Vue.js</p>
+                                </div>
+                            </div>
+                            <!-- Node -->
+                            <div class="col-6 col-md-4 anim-uni-scale-in">
+                                <div class="mxd-tech-stack-cards__inner">
+                                    <div class="mxd-tech-stack-cards__logo">
+                                        <svg viewBox="0 0 256 288"><path d="M255.6,84.5c0-4.8-1-9.1-3.1-12.8-2.1-3.6-5.1-6.6-9.2-9-34-19.6-68.1-39.2-102.1-58.8-9.2-5.3-18.1-5.1-27.2.3C100.5,12.2,32.7,51,12.4,62.7c-8.3,4.8-12.4,12.2-12.4,21.7v118.4c0,4.7,1,8.9,3,12.5,2.1,3.7,5.2,6.8,9.4,9.3,20.2,11.7,88,50.5,101.6,58.5,9.1,5.4,18,5.6,27.2.3,34-19.6,68.1-39.2,102.1-58.8,4.2-2.4,7.3-5.5,9.4-9.3,2-3.6,3-7.8,3-12.5v-118.3h0ZM129.5,238.6h-1.1c-35.3,0-66-19.2-82.4-47.7-8-13.9-12.6-30.1-12.6-47.3,0-52.5,42.5-95,95-95s65.6,19,82.1,47.2h0l.2.3s-.1-.2-.2-.3l-41.3,23.8c-8.1-13.8-23.1-23.1-40.2-23.3h-.5c-26.1,0-47.3,21.2-47.3,47.3s2.3,16.6,6.2,23.5c8.2,14.2,23.5,23.8,41.1,23.8s33.1-9.7,41.2-24.1l-.2.3,41.3,23.9c-16.3,28.1-46.5,47.2-81.3,47.5h0Z"/></svg>
+                                    </div>
+                                    <p class="t-140">Node.js</p>
+                                </div>
+                            </div>
+                            <!-- JS -->
+                            <div class="col-6 col-md-4 anim-uni-scale-in">
+                                <div class="mxd-tech-stack-cards__inner">
+                                    <div class="mxd-tech-stack-cards__logo">
+                                        <svg viewBox="0 0 256 256"><path d="M0,0v256h256V0H0ZM139.3,199.7c0,24.9-14.6,36.3-35.9,36.3s-30.4-10-36.1-22h0l19.6-11.9c3.8,6.7,7.2,12.4,15.5,12.4s12.9-3.1,12.9-15.1v-81.8h24.1v82.1h-.1ZM196.2,235.9c-22.3,0-36.8-10.7-43.8-24.6h0l19.6-11.3c5.2,8.4,11.9,14.6,23.7,14.6s16.3-5,16.3-11.9-6.5-11.2-17.5-16l-6-2.6c-17.4-7.4-28.9-16.7-28.9-36.3s13.7-31.8,35.2-31.8,26.3,5.3,34.2,19.2l-18.7,12c-4.1-7.4-8.6-10.3-15.5-10.3s-11.5,4.5-11.5,10.3,4.5,10.1,14.8,14.6l6,2.6c20.4,8.8,32,17.7,32,37.8s-17,33.5-39.9,33.5v.2Z"/></svg>
+                                    </div>
+                                    <p class="t-140">JavaScript</p>
+                                </div>
+                            </div>
+                            <!-- Android -->
+                            <div class="col-6 col-md-4 anim-uni-scale-in">
+                                <div class="mxd-tech-stack-cards__inner">
+                                    <div class="mxd-tech-stack-cards__logo">
+                                        <svg viewBox="0 0 351.8 198.8"><path d="M256.9,148.5c-8.1,0-14.7-6.6-14.7-14.7s6.6-14.7,14.7-14.7,14.7,6.6,14.7,14.7h0c0,8.1-6.6,14.7-14.7,14.7M94.9,148.5c-8.1,0-14.7-6.6-14.7-14.7s6.6-14.7,14.7-14.7,14.7,6.6,14.7,14.7h0c0,8.1-6.6,14.7-14.7,14.7M262.1,60.4l29.3-51c1.2-3.3-.5-7-3.8-8.2-2.1-.8-4.5-.4-6.3,1.1-.2.3-.4.6-.5,1l-29.6,51.6c-47.9-21.5-102.7-21.5-150.7,0L70.9,3.6c-2.3-2.6-6.3-2.9-9-.6-1.6,1.4-2.4,3.6-2.1,5.7,0,.4.3.7.6,1l29.2,51C38.3,88.6,4.6,140.6,0,198.8h351.8c-4.6-58.3-38.3-110.4-89.7-138.4"/></svg>
+                                    </div>
+                                    <p class="t-140">Android</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="mxd-section pt-0">
+            <div class="mxd-container">
+                <div class="row text-center g-3 g-md-4">
+                    <div class="col-6 col-md-3 anim-uni-in-up">
+                        <div class="mxd-stats-simple__inner bg-base-tint radius-l">
+                            <p class="mxd-stats-simple__counter" data-target="50">0</p>
+                            <p class="t-muted t-xsmall d-md-block t-140">Happy Clients</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 anim-uni-in-up">
+                        <div class="mxd-stats-simple__inner bg-base-tint radius-l">
+                            <p class="mxd-stats-simple__counter" data-target="80">0</p>
+                            <p class="t-muted t-xsmall d-md-block t-140">Return Rate (%)</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 anim-uni-in-up">
+                        <div class="mxd-stats-simple__inner bg-base-tint radius-l">
+                            <p class="mxd-stats-simple__counter" data-target="5">0</p>
+                            <p class="t-muted t-xsmall d-md-block t-140">Years Exp.</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 anim-uni-in-up">
+                        <div class="mxd-stats-simple__inner bg-base-tint radius-l">
+                            <p class="mxd-stats-simple__counter" data-target="150">0</p>
+                            <p class="t-muted t-xsmall d-md-block t-140">Projects Done</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mxd-section" id="contact">
+            <div class="mxd-container">
+                <div class="mxd-promo__inner anim-uni-scale-in">
+                    <p class="mxd-promo__caption">Let's talk about your project!</p>
+                    <div class="mxd-promo__controls mt-5">
+                        <a class="btn btn-additional" href="404.html" style="padding: 18px 40px; font-size: 1.25rem;">
+                            Contact Us <i class="ph-bold ph-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="padding: 5rem 0 2rem;">
+        <div class="mxd-container">
+            <div class="mb-5">
+                <a href="index.html" class="mxd-logo">
+                    <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;">
+                </a>
+            </div>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div style="padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%;">
+                        <ul style="list-style: none; margin-bottom: 2rem;">
+                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Home</a></li>
+                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">About us</a></li>
+                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Services</a></li>
+                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Blog</a></li>
+                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Contact</a></li>
+                        </ul>
+                        <div style="display: flex; gap: 1rem; opacity: 0.6;">
+                            <a href="404.html">Privacy Policy</a>
+                            <a href="404.html">Terms</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div style="padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">hello@stackly.in</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">+91 98765 43210</p>
+                        <p style="opacity: 0.6; margin-top: 0.5rem;">Salem, Tamil Nadu, India</p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div style="padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%;">
+                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Subscribe to our insights</p>
+                        <form onsubmit="event.preventDefault(); window.location.href='404.html';">
+                            <input type="email" placeholder="Your Email" required style="width: 100%; padding: 15px 20px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.1); background: transparent; margin-bottom: 10px; font-family: inherit; color: inherit;">
+                            <button type="submit" style="width: 100%; padding: 12px 24px; border-radius: 100px; background: var(--base); color: var(--base-opp); border: 1px solid var(--base); font-family: inherit; font-weight: 600; cursor: pointer;">Subscribe</button>
+                        </form>
+                        <p style="opacity: 0.6; margin-top: 1.5rem; text-align: center;">© 2026 Stackly. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        // Register GSAP Plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Initial Loader & Premium Hero Entry Animation
+        const initTl = gsap.timeline();
+
+        function playIntro() {
+            // Prevent running multiple times
+            if (document.body.dataset.introPlayed) return;
+            document.body.dataset.introPlayed = true;
+
+            initTl.to('#loader', { 
+                opacity: 0, duration: 0.8, delay: 2, ease: "power2.inOut", 
+                onComplete: () => {
+                    const ldr = document.getElementById('loader');
+                    if (ldr) {
+                        ldr.style.display = 'none';
+                        ldr.style.pointerEvents = 'none';
+                    }
+                } 
+            })
+            .from('.ht-text', { yPercent: 120, stagger: 0.15, duration: 1.2, ease: "power4.out" }, "-=0.3")
+            .from('.ht-subtext', { opacity: 0, y: 30, duration: 1, ease: "power3.out" }, "-=0.8")
+            .from('.hero-btn-wrap', { opacity: 0, y: 30, duration: 1, ease: "power3.out" }, "-=0.8")
+            /* Fix: Animate the inner parallax wrapper instead of the main robot wrapper. 
+               This prevents GSAP from overriding our mobile scale logic! */
+            .from('.robot-parallax-wrapper', { scale: 0, opacity: 0, duration: 1, ease: "back.out(1.5)" }, "-=1");
+        }
+
+        // Fire instantly when HTML is ready (does not wait for heavy images)
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(playIntro, 1);
+        } else {
+            document.addEventListener('DOMContentLoaded', playIntro);
+        }
+        
+        // Failsafes just in case
+        window.addEventListener('load', playIntro);
+        setTimeout(playIntro, 2000); // Strict 2-second timeout to force open the site
+
+        // 2. Interactive Robot on Mouse Move/Touch (Parallax Wrapper & Scanner)
+        function handleInteraction(e) {
+            // Support both Mouse and Touch events
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const x = (clientX / window.innerWidth - 0.5) * 20;
+            const y = (clientY / window.innerHeight - 0.5) * 20;
+
+            // Shift the outer wrapper slightly so we don't interfere with the internal 3D CSS
+            gsap.to('.robot-parallax-wrapper', { x: x * 1.5, y: y * 1.5, duration: 1, ease: "power2.out" });
+
+            // Blue Scanner Beam Tracking
+            const scannerThing = document.querySelector('.scannerThing');
+            const scannerOrigin = document.querySelector('.scannerOrigin'); 
+
+            if (scannerThing && scannerOrigin) {
+                // Get the coordinates of the small pivot dot
+                const originRect = scannerOrigin.getBoundingClientRect();
+                
+                const originX = originRect.left + (originRect.width / 2);
+                const originY = originRect.top + (originRect.height / 2);
+                
+                // Calculate angle in degrees
+                let angle = Math.atan2(clientY - originY, clientX - originX) * (180 / Math.PI);
+                
+                // CSS triangle points straight DOWN by default, which is 90 degrees in atan2.
+                // Subtract 90 so it aligns perfectly with the cursor.
+                let rotation = angle - 90;
+                
+                // Use GSAP's '_short' suffix to ensure it takes the shortest rotational path 
+                // and tracks upwards completely smoothly without winding or snapping.
+                gsap.to(scannerThing, { rotationZ: rotation + "_short", duration: 0.15, ease: "power2.out" });
+            }
+        }
+
+        document.addEventListener('mousemove', handleInteraction);
+        document.addEventListener('touchmove', handleInteraction, { passive: true });
+
+        // 3. Hero Video Expansion on Scroll
+        gsap.to('.hero-video-inner', {
+            width: "100%", borderRadius: "24px", ease: "none",
+            scrollTrigger: {
+                trigger: ".hero-video-wrapper", start: "top 85%", end: "top 15%", scrub: 1
+            }
+        });
+
+        // 4. Global Scroll Animations (Staggered per container when possible)
+        gsap.utils.toArray('.anim-uni-in-up').forEach(el => {
+            gsap.fromTo(el, 
+                { autoAlpha: 0, y: 60 }, 
+                { autoAlpha: 1, y: 0, duration: 1, ease: "power3.out",
+                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                }
+            );
+        });
+
+        gsap.utils.toArray('.anim-uni-scale-in').forEach((el) => {
+            gsap.fromTo(el, 
+                { autoAlpha: 0, scale: 0.9, y: 40 }, 
+                { autoAlpha: 1, scale: 1, y: 0, duration: 1, ease: "power3.out",
+                  scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                }
+            );
+        });
+
+        // 5. Counters Animation Setup via GSAP
+        const animateValue = (obj, start, end, duration) => {
+            let current = { val: start };
+            gsap.to(current, {
+                val: end, duration: duration / 1000, ease: "power2.out",
+                onUpdate: function() {
+                    obj.innerHTML = Math.floor(current.val) + (obj.dataset.target == 80 ? '%' : '+');
+                },
+                scrollTrigger: { trigger: obj, start: "top 90%", once: true }
+            });
+        };
+
+        document.querySelectorAll('.mxd-stats-simple__counter').forEach(counter => {
+            animateValue(counter, 0, parseInt(counter.dataset.target), 2500);
+        });
+
+        // 6. Smooth Menu Nav Animations (Open/Close)
+        const menuTl = gsap.timeline({ paused: true, reversed: true });
+        
+        menuTl.to('.mxd-menu__wrapper', { autoAlpha: 1, duration: 0.4, ease: "power2.inOut" })
+              .from('.mxd-menu__contain .col-md-6:first-child > *', { y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: "power3.out" }, "-=0.2")
+              .from('.main-menu__link', { y: 40, opacity: 0, stagger: 0.1, duration: 0.6, ease: "power3.out" }, "-=0.6");
+
+        const hamburger = document.querySelector('.mxd-nav__hamburger');
+        const navWrap = document.querySelector('.mxd-menu__wrapper');
+        const navLinks = document.querySelectorAll('.nav-link-click');
+        let isMenuOpen = false;
+        
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            hamburger.classList.toggle('is-active');
+            if (isMenuOpen) {
+                menuTl.play();
+                document.body.style.overflow = 'hidden'; // Stop scrolling
+            } else {
+                menuTl.reverse();
+                document.body.style.overflow = '';
+            }
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        
+        // Close menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // 7. Dark Mode Toggle
+        const switcher = document.getElementById('color-switcher');
+        switcher.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+    </script>
+</body>
+</html>
