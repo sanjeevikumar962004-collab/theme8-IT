@@ -87,79 +87,111 @@
 
         /* Dashboard Layout */
         .dashboard-container { display: flex; min-height: 100vh; }
-        
-        /* Sidebar */
-        .sidebar {
-            width: 280px; background: var(--base-tint); padding: 2rem;
-            display: flex; flex-direction: column; border-right: 1px solid rgba(128,128,128,0.1);
-            position: fixed; top: 0; left: 0; height: 100vh; z-index: 100;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .mxd-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 3rem; color: #8b5cf6;}
-        
-        .nav-item {
-            display: flex; align-items: center; gap: 12px; padding: 14px 20px;
-            color: var(--base); opacity: 0.6; border-radius: 16px; font-weight: 600;
-            transition: all 0.3s ease; margin-bottom: 8px; font-size: 1.05rem;
-        }
-        .nav-item i { font-size: 1.3rem; }
-        .nav-item:hover, .nav-item.active { background: var(--base-opp); opacity: 1; color: #8b5cf6; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-        .nav-item.logout:hover { color: #ef4444; }
 
-        /* Main Content */
-        .main-content {
-            flex-grow: 1; padding: 2rem 3rem; margin-left: 280px; width: calc(100% - 280px);
+        /* ==========================================
+           OVERLAY NAVIGATION (same as index.html)
+           ========================================== */
+        .mxd-nav__hamburger {
+            position: fixed; top: 24px; left: 24px;
+            width: 50px; height: 50px;
+            background: var(--base); border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            gap: 6px; cursor: pointer; border: none; transition: background-color 0.4s ease;
+            z-index: 1100;
         }
-        
-        /* Topbar */
+        .mxd-nav__hamburger .hamburger__line {
+            width: 20px; height: 2px; background: var(--base-opp);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mxd-nav__hamburger.is-active .hamburger__line:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .mxd-nav__hamburger.is-active .hamburger__line:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+        .mxd-menu__wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--base-opp); z-index: 1000;
+            opacity: 0; visibility: hidden;
+            display: flex; align-items: center; justify-content: center;
+            padding: 40px 40px 40px 100px;
+        }
+        .mxd-menu__contain { width: 100%; max-width: 1200px; padding: 0 40px; }
+        .main-menu__accordion { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; line-height: 1; }
+        .main-menu__link {
+            display: block; overflow: hidden; height: 1.3em;
+            text-decoration: none; color: var(--base); margin-bottom: 0.5rem;
+        }
+        .menu-text-wrapper { display: block; transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .main-menu__item { display: block; line-height: 1.3em; height: 1.3em; }
+        .main-menu__link:hover .menu-text-wrapper { transform: translateY(-1.3em); }
+        .hover-text { color: #8b5cf6; }
+        .menu-icon { font-size: 0.6em; color: #8b5cf6; margin-right: 0.3em; vertical-align: middle; }
+
+        /* ==========================================
+           MAIN CONTENT & TOPBAR
+           ========================================== */
+        .main-content { flex-grow: 1; padding: 2rem 3rem 2rem 5rem; width: 100%; }
         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
         .topbar-title h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.2rem; }
-        
+        .mxd-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; text-transform: uppercase; letter-spacing: 2px; color: #8b5cf6; }
+
         /* Switcher & Avatar */
         .mxd-color-switcher { background: transparent; border: 2px solid var(--base); width: 44px; height: 24px; border-radius: 20px; position: relative; cursor: pointer; transition: border-color 0.4s ease; }
         .mxd-color-switcher::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: var(--base); border-radius: 50%; transition: transform 0.3s ease; }
         [data-theme="dark"] .mxd-color-switcher::after { transform: translateX(20px); }
-        
         .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: #8b5cf6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
 
         /* Cards */
-        .dash-card {
-            background: var(--base-tint); border-radius: var(--radius-l); padding: 2rem;
-            border: 1px solid rgba(128,128,128,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%; display: flex; flex-direction: column;
-        }
+        .dash-card { background: var(--base-tint); border-radius: var(--radius-l); padding: 2rem; border: 1px solid rgba(128,128,128,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; height: 100%; display: flex; flex-direction: column; }
         .dash-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
         [data-theme="dark"] .dash-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
         .stat-value { font-size: 3rem; font-weight: 800; line-height: 1; margin: 1rem 0; color: var(--base); }
         .stat-icon { font-size: 1.5rem; color: #8b5cf6; }
-        
+
         /* Chart Containers */
         .chart-container { position: relative; height: 300px; width: 100%; margin-top: 1rem; flex-grow: 1; }
-        .chart-container-sm { position: relative; height: 250px; width: 100%; margin-top: 1rem; display: flex; justify-content: center; align-items: center;}
+        .chart-container-sm { position: relative; height: 250px; width: 100%; margin-top: 1rem; display: flex; justify-content: center; align-items: center; }
 
         /* Lists */
         .activity-item { display: flex; align-items: center; gap: 15px; padding: 1.2rem 0; border-bottom: 1px solid rgba(128,128,128,0.1); }
         .activity-item:last-child { border-bottom: none; }
         .activity-icon { width: 45px; height: 45px; border-radius: 50%; background: var(--base-opp); display: flex; align-items: center; justify-content: center; color: #8b5cf6; font-size: 1.2rem; flex-shrink: 0; }
-
         .deadline-item { display: flex; gap: 15px; padding: 1.2rem 0; border-bottom: 1px solid rgba(128,128,128,0.1); }
         .deadline-item:last-child { border-bottom: none; }
         .deadline-date { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; padding: 10px; border-radius: 12px; text-align: center; font-weight: 800; line-height: 1.2; min-width: 60px; height: fit-content; }
-        .deadline-date span { display: block; font-size: 0.8rem; text-transform: uppercase; font-weight: 600; opacity: 0.8; margin-top: 2px;}
+        .deadline-date span { display: block; font-size: 0.8rem; text-transform: uppercase; font-weight: 600; opacity: 0.8; margin-top: 2px; }
 
-        /* Mobile Adjustments */
-        .mobile-toggle { display: none; background: transparent; border: none; font-size: 1.8rem; color: var(--base); cursor: pointer; }
-        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-        .sidebar-overlay.open { opacity: 1; visibility: visible; }
-
-        @media (max-width: 991px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); box-shadow: 0 0 50px rgba(0,0,0,0.2); }
-            .main-content { margin-left: 0; width: 100%; padding: 2rem 1.5rem; }
-            .mobile-toggle { display: block; }
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        /* Logo dark mode fix: invert white bg to black, hue-rotate preserves purple */
+        [data-theme="dark"] .stackly-logo-img {
+            filter: invert(1) hue-rotate(180deg);
         }
 
-        /* Animations */
+        @media (max-width: 991px) {
+            .main-content { padding: 5rem 1.5rem 2rem 1.5rem; }
+            .topbar { flex-wrap: wrap; gap: 1rem; }
+            .topbar-title h1 { font-size: 1.5rem; }
+            .mxd-menu__wrapper { padding: 80px 1.5rem 2rem 1.5rem !important; }
+            .mxd-menu__contain { padding: 0 !important; }
+            .main-menu__accordion { font-size: clamp(1.8rem, 8vw, 3rem); }
+            .chart-container { height: 240px; }
+        }
+        @media (max-width: 576px) {
+            .mxd-nav__hamburger { top: 16px; left: 16px; }
+            .main-content { padding: 4.5rem 1rem 2rem 1rem; }
+            .stat-value { font-size: 2rem; }
+        }
+        /* Logo theme adjustment */
+        .mxd-logo img, .stackly-logo-img {
+            transition: filter 0.4s ease;
+        }
+        [data-theme="light"] .mxd-logo img, [data-theme="light"] .stackly-logo-img {
+            filter: brightness(0);
+        }
+        [data-theme="dark"] .mxd-logo img, [data-theme="dark"] .stackly-logo-img {
+            filter: brightness(1);
+        }
+
         .anim-fade-up { opacity: 0; transform: translateY(20px); }
         .anim-card { opacity: 0; transform: translateY(40px); }
     </style>
@@ -178,46 +210,59 @@
         </figure>
     </div>
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Overlay Navigation Menu (same as index.html) -->
+    <nav class="mxd-menu__wrapper" id="dashMenu">
+        <div class="mxd-menu__contain row w-100 align-items-center">
+            <div class="col-12 col-md-6 d-flex flex-column justify-content-center text-center text-md-start">
+                <a href="index.html" style="display:inline-flex;align-items:center;gap:10px;margin-bottom:2rem;">
+                    <img src="images/whitelogo.webp" alt="Stackly Logo" class="stackly-logo-img" style="width:80px;height:80px;object-fit:contain;border-radius:8px;">
+                </a>
+                <p style="font-size:clamp(1rem,2vw,1.25rem);opacity:0.6;margin-bottom:0.5rem;">👋 User Portal</p>
+                <p style="font-size:0.875rem;opacity:0.5;">hello@stackly.in &nbsp;|&nbsp; +91 98765 43210</p>
+            </div>
+            <div class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-end mt-5 mt-md-0">
+                <ul class="main-menu__accordion text-center text-md-end">
+                    <li><a href="user-dashboard.html" class="main-menu__link menu-nav-link">
+                        <div class="menu-text-wrapper"><span class="main-menu__item"><i class="ph ph-squares-four menu-icon"></i>Dashboard</span><span class="main-menu__item hover-text">Dashboard</span></div>
+                    </a></li>
+                    <li><a href="404.html" class="main-menu__link menu-nav-link">
+                        <div class="menu-text-wrapper"><span class="main-menu__item"><i class="ph ph-folder-open menu-icon"></i>My Projects</span><span class="main-menu__item hover-text">My Projects</span></div>
+                    </a></li>
+                    <li><a href="404.html" class="main-menu__link menu-nav-link">
+                        <div class="menu-text-wrapper"><span class="main-menu__item"><i class="ph ph-receipt menu-icon"></i>Invoices</span><span class="main-menu__item hover-text">Invoices</span></div>
+                    </a></li>
+                    <li><a href="404.html" class="main-menu__link menu-nav-link">
+                        <div class="menu-text-wrapper"><span class="main-menu__item"><i class="ph ph-lifebuoy menu-icon"></i>Support</span><span class="main-menu__item hover-text">Support</span></div>
+                    </a></li>
+                    <li><a href="404.html" class="main-menu__link menu-nav-link">
+                        <div class="menu-text-wrapper"><span class="main-menu__item"><i class="ph ph-gear menu-icon"></i>Settings</span><span class="main-menu__item hover-text">Settings</span></div>
+                    </a></li>
+                    <li><a href="login.html" class="main-menu__link menu-nav-link">
+                        <div class="menu-text-wrapper"><span class="main-menu__item" style="color:#ef4444;"><i class="ph ph-sign-out menu-icon" style="color:#ef4444;"></i>Logout</span><span class="main-menu__item hover-text" style="color:#ef4444;">Logout</span></div>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <div class="dashboard-container">
-        
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="d-flex justify-content-between align-items-center mb-5">
-                <a href="index.html" class="mxd-logo">
-                    <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;">
-                </a>
-                <button class="mobile-toggle close-sidebar"><i class="ph ph-x"></i></button>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <a href="404.html" class="nav-item active"><i class="ph ph-squares-four"></i> Dashboard</a>
-                <a href="404.html" class="nav-item"><i class="ph ph-folder-open"></i> My Projects</a>
-                <a href="404.html" class="nav-item"><i class="ph ph-receipt"></i> Invoices</a>
-                <a href="404.html" class="nav-item"><i class="ph ph-chart-line-up"></i> Analytics</a>
-                <a href="404.html" class="nav-item"><i class="ph ph-lifebuoy"></i> Support</a>
-                <a href="404.html" class="nav-item"><i class="ph ph-gear"></i> Settings</a>
-            </nav>
-            
-            <div class="mt-auto">
-                <a href="login.html" class="nav-item logout"><i class="ph ph-sign-out"></i> Logout</a>
-            </div>
-        </aside>
 
         <!-- Main Content -->
         <main class="main-content">
             <!-- Topbar -->
             <header class="topbar">
                 <div class="d-flex align-items-center gap-3">
-                    <button class="mobile-toggle open-sidebar"><i class="ph ph-list"></i></button>
+                    <button class="mxd-nav__hamburger" id="dashHamburger" aria-label="Menu">
+                        <div class="hamburger__line"></div>
+                        <div class="hamburger__line"></div>
+                    </button>
                     <div class="topbar-title">
-                        <h1 class="anim-fade-up">Welcome back, Alex</h1>
+                        <h1 class="anim-fade-up" id="user-welcome-title">Welcome back!</h1>
                         <p class="t-muted anim-fade-up" style="transition-delay: 0.1s;">Here is what's happening with your account today.</p>
+                        <p class="anim-fade-up" style="transition-delay: 0.15s; font-size: 0.9rem; margin-top: 0.3rem;"><span style="background: rgba(139,92,246,0.1); color: #8b5cf6; padding: 3px 10px; border-radius: 20px; font-weight: 700;"><i class="ph-fill ph-envelope" style="margin-right: 4px;"></i><span id="user-email-display">user@stackly.in</span></span></p>
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-4 anim-fade-up" style="transition-delay: 0.2s;">
-                    <button id="color-switcher" class="mxd-color-switcher" type="button"></button>
                     <div class="profile-avatar">A</div>
                 </div>
             </header>
@@ -384,26 +429,46 @@
             });
         }
 
-        // Theme Toggle
-        document.getElementById('color-switcher').addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme');
-            const newTheme = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            updateChartTheme(); // Update charts when theme changes
-        });
+        // Display logged-in email from localStorage
+        (function() {
+            const email = localStorage.getItem('stackly_user_email');
+            if (email) {
+                const emailEl = document.getElementById('user-email-display');
+                const welcomeEl = document.getElementById('user-welcome-title');
+                if (emailEl) emailEl.textContent = email;
+                if (welcomeEl) {
+                    const username = email.split('@')[0];
+                    const capitalized = username.charAt(0).toUpperCase() + username.slice(1);
+                    welcomeEl.textContent = 'Welcome back, ' + capitalized + '!';
+                }
+            }
+        })();
 
-        // Mobile Sidebar Toggle
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        
-        function toggleSidebar() {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('open');
+        // ==========================================
+        // Overlay Menu Toggle (same as index.html)
+        // ==========================================
+        const menuTl = gsap.timeline({ paused: true, reversed: true });
+        menuTl
+            .to('#dashMenu', { autoAlpha: 1, duration: 0.4, ease: 'power2.inOut' })
+            .from('.mxd-menu__contain .col-md-6:first-child > *', { y: 30, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out' }, '-=0.2')
+            .from('.main-menu__link', { y: 40, opacity: 0, stagger: 0.1, duration: 0.6, ease: 'power3.out' }, '-=0.6');
+
+        const hamburger = document.getElementById('dashHamburger');
+        let isMenuOpen = false;
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            hamburger.classList.toggle('is-active');
+            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+            isMenuOpen ? menuTl.play() : menuTl.reverse();
         }
-        
-        document.querySelector('.open-sidebar').addEventListener('click', toggleSidebar);
-        document.querySelector('.close-sidebar').addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar);
+
+        hamburger.addEventListener('click', toggleMenu);
+        document.querySelectorAll('.menu-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (isMenuOpen) toggleMenu();
+            });
+        });
 
         // Init Charts & Animations
         window.addEventListener('load', () => {

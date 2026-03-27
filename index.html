@@ -92,6 +92,17 @@
         .bg-additional { background-color: var(--additional); }
         .bg-base-opp { background-color: var(--base); color: var(--base-opp); }
         .bg-base-opp p { color: var(--base-opp); }
+
+        /* Logo theme adjustment */
+        .mxd-logo img, .stackly-logo-img {
+            transition: filter 0.4s ease;
+        }
+        [data-theme="light"] .mxd-logo img, [data-theme="light"] .stackly-logo-img {
+            filter: brightness(0);
+        }
+        [data-theme="dark"] .mxd-logo img, [data-theme="dark"] .stackly-logo-img {
+            filter: brightness(1);
+        }
         
         .radius-l { border-radius: var(--radius-l); }
         .padding-4 { padding: 3rem; }
@@ -277,7 +288,7 @@
             font-weight: 600; margin-right: 8px; margin-bottom: 8px;
         }
         .tag-outline { border: 1px solid rgba(0,0,0,0.2); }
-        .tag-outline-opposite { border: 1px solid rgba(255,255,255,0.2); }
+        .tag-outline-opposite { border: 1px solid currentColor; opacity: 0.8; }
         .tag-permanent { background: #fff; color: #000; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
         /* ==========================================
@@ -804,7 +815,7 @@
     <header class="mxd-header">
         <div class="mxd-header__logo">
             <a href="index.html" class="mxd-logo">
-                <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
+                <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
             </a>
         </div>
         <div class="mxd-header__controls">
@@ -850,11 +861,7 @@
                 <div class="hero-title-line"><span class="ht-text">Digital</span></div>
                 <div class="hero-title-line"><span class="ht-text" style="color: #8b5cf6;">Excellence.</span></div>
                 <p class="t-large mt-4 ht-subtext px-3" style="max-width: 600px; margin-inline: auto; color: var(--base);">Stackly delivers cutting-edge software and premium design solutions from Salem to the world.</p>
-                <div class="hero-btn-wrap mt-5">
-                    <a href="404.html" class="btn btn-violet" style="padding: 16px 36px; font-size: 1.15rem;">
-                        Explore Solutions <i class="ph-bold ph-arrow-right"></i>
-                    </a>
-                </div>
+                
             </div>
         </section>
 
@@ -976,10 +983,10 @@
                                 <div class="mxd-services-cards-s__title"><p>Cybersecurity</p></div>
                                 <div class="service-content">
                                     <div class="mb-3">
-                                        <span class="tag tag-outline-opposite" style="color:#fff">Audits</span>
-                                        <span class="tag tag-outline-opposite" style="color:#fff">Protection</span>
+                                        <span class="tag tag-outline-opposite">Audits</span>
+                                        <span class="tag tag-outline-opposite">Protection</span>
                                     </div>
-                                    <p style="color: rgba(255,255,255,0.7)">Advanced threat detection, encryption solutions, and secure data protection.</p>
+                                    <p class="t-muted">Advanced threat detection, encryption solutions, and secure data protection.</p>
                                 </div>
                             </div>
                             <div class="mxd-services-cards-s__image">
@@ -1227,45 +1234,50 @@
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer style="padding: 5rem 0 2rem;">
+   <footer class="mxd-footer">
         <div class="mxd-container">
-            <div class="mb-5">
+            <div class="mb-5 anim-uni-in-up">
                 <a href="index.html" class="mxd-logo">
-                    <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;">
+                    <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;filter:brightness(0);">
                 </a>
             </div>
             <div class="row g-4">
-                <div class="col-12 col-md-4">
-                    <div style="padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%;">
-                        <ul style="list-style: none; margin-bottom: 2rem;">
-                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Home</a></li>
-                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">About us</a></li>
-                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Services</a></li>
-                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Blog</a></li>
-                            <li style="margin-bottom: 1rem; font-size: 1.25rem; font-weight: 600;"><a href="404.html">Contact</a></li>
+                <div class="col-12 col-md-4 anim-uni-in-up">
+                    <div class="footer-blocks__card">
+                        <ul class="footer-nav mb-5">
+                            <li class="footer-nav__item"><a href="404.html">Home</a></li>
+                            <li class="footer-nav__item"><a href="404.html">About us</a></li>
+                            <li class="footer-nav__item"><a href="404.html">Services</a></li>
+                            <li class="footer-nav__item"><a href="404.html">Blog</a></li>
+                            <li class="footer-nav__item"><a href="404.html">Contact</a></li>
                         </ul>
-                        <div style="display: flex; gap: 1rem; opacity: 0.6;">
+                        <div class="d-flex gap-3 t-muted">
                             <a href="404.html">Privacy Policy</a>
                             <a href="404.html">Terms</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
-                    <div style="padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%; display: flex; flex-direction: column; justify-content: center;">
-                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">hello@stackly.in</p>
-                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">+91 98765 43210</p>
-                        <p style="opacity: 0.6; margin-top: 0.5rem;">Salem, Tamil Nadu, India</p>
+                <div class="col-12 col-md-4 anim-uni-in-up">
+                    <div class="footer-blocks__card d-flex flex-column justify-content-center">
+                        <p class="footer-blocks__title-m">hello@stackly.in</p>
+                        <p class="footer-blocks__title-m">+91 98765 43210</p>
+                        <p class="t-muted mt-3">Salem, Tamil Nadu, India</p>
+                        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                            <a href="404.html" style="width:42px;height:42px;border-radius:50%;background:var(--base-opp);border:1px solid rgba(128,128,128,0.15);display:flex;align-items:center;justify-content:center;color:var(--base);font-size:1.25rem;transition:all 0.3s ease;" onmouseover="this.style.background='#0077b5';this.style.color='#fff';this.style.borderColor='#0077b5'" onmouseout="this.style.background='var(--base-opp)';this.style.color='var(--base)';this.style.borderColor='rgba(128,128,128,0.15)'"><i class="ph-fill ph-linkedin-logo"></i></a>
+                            <a href="404.html" style="width:42px;height:42px;border-radius:50%;background:var(--base-opp);border:1px solid rgba(128,128,128,0.15);display:flex;align-items:center;justify-content:center;color:var(--base);font-size:1.25rem;transition:all 0.3s ease;" onmouseover="this.style.background='#000';this.style.color='#fff';this.style.borderColor='#000'" onmouseout="this.style.background='var(--base-opp)';this.style.color='var(--base)';this.style.borderColor='rgba(128,128,128,0.15)'"><i class="ph-fill ph-x-logo"></i></a>
+                            <a href="404.html" style="width:42px;height:42px;border-radius:50%;background:var(--base-opp);border:1px solid rgba(128,128,128,0.15);display:flex;align-items:center;justify-content:center;color:var(--base);font-size:1.25rem;transition:all 0.3s ease;" onmouseover="this.style.background='#e1306c';this.style.color='#fff';this.style.borderColor='#e1306c'" onmouseout="this.style.background='var(--base-opp)';this.style.color='var(--base)';this.style.borderColor='rgba(128,128,128,0.15)'"><i class="ph-fill ph-instagram-logo"></i></a>
+                            <a href="404.html" style="width:42px;height:42px;border-radius:50%;background:var(--base-opp);border:1px solid rgba(128,128,128,0.15);display:flex;align-items:center;justify-content:center;color:var(--base);font-size:1.25rem;transition:all 0.3s ease;" onmouseover="this.style.background='#333';this.style.color='#fff';this.style.borderColor='#333'" onmouseout="this.style.background='var(--base-opp)';this.style.color='var(--base)';this.style.borderColor='rgba(128,128,128,0.15)'"><i class="ph-fill ph-github-logo"></i></a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
-                    <div style="padding: 2rem; border-radius: 24px; background: var(--base-tint); height: 100%;">
-                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Subscribe to our insights</p>
-                        <form onsubmit="event.preventDefault(); window.location.href='404.html';">
-                            <input type="email" placeholder="Your Email" required style="width: 100%; padding: 15px 20px; border-radius: 30px; border: 1px solid rgba(0,0,0,0.1); background: transparent; margin-bottom: 10px; font-family: inherit; color: inherit;">
-                            <button type="submit" style="width: 100%; padding: 12px 24px; border-radius: 100px; background: var(--base); color: var(--base-opp); border: 1px solid var(--base); font-family: inherit; font-weight: 600; cursor: pointer;">Subscribe</button>
+                <div class="col-12 col-md-4 anim-uni-in-up">
+                    <div class="footer-blocks__card">
+                        <p class="footer-blocks__title-m">Subscribe to our insights</p>
+                        <form class="form-light" onsubmit="event.preventDefault(); window.location.href='404.html';">
+                            <input type="email" placeholder="Your Email" required>
+                            <button class="btn btn-form mt-2" type="submit">Subscribe</button>
                         </form>
-                        <p style="opacity: 0.6; margin-top: 1.5rem; text-align: center;">© 2026 Stackly. All rights reserved.</p>
+                        <p class="t-muted mt-4 text-center">© 2026 Stackly. All rights reserved.</p>
                     </div>
                 </div>
             </div>

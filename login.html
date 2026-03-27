@@ -24,6 +24,17 @@
         [data-theme="dark"] {
             --base: #FAF7F6; --base-opp: #161616; --base-tint: #222222;
         }
+
+        /* Logo theme adjustment */
+        .mxd-logo img, .stackly-logo-img {
+            transition: filter 0.4s ease;
+        }
+        [data-theme="light"] .mxd-logo img, [data-theme="light"] .stackly-logo-img {
+            filter: brightness(0);
+        }
+        [data-theme="dark"] .mxd-logo img, [data-theme="dark"] .stackly-logo-img {
+            filter: brightness(1);
+        }
         
         /* ==========================================
            LOADER
@@ -195,7 +206,7 @@
     <!-- Header -->
     <header class="mxd-header">
         <a href="index.html" class="mxd-logo">
-            <img src="images/Untitled design.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
+            <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
         </a>
         <button id="color-switcher" class="mxd-color-switcher" type="button" aria-label="Toggle Dark Mode"></button>
     </header>
@@ -339,6 +350,9 @@
                 
                 // Simulate API Call
                 setTimeout(() => {
+                    // Save email to localStorage for dashboard display
+                    localStorage.setItem('stackly_user_email', email);
+                    localStorage.setItem('stackly_user_role', role);
                     alert(`Login Successful! Redirecting to ${role} dashboard...`);
                     if (role === 'admin') {
                         window.location.href = 'admin-dashboard.html';
