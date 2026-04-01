@@ -1441,13 +1441,17 @@
             link.addEventListener('click', toggleMenu);
         });
 
-        // 7. Dark Mode Toggle
+        // 7. Dark Mode Persistence & Toggle
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
         const switcher = document.getElementById('color-switcher');
         switcher.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         });
-
     </script>
 </body>
 </html>

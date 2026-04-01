@@ -508,7 +508,7 @@
     <header class="mxd-header">
         <div class="mxd-header__logo">
             <a href="index.html" class="mxd-logo">
-                <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;filter:brightness(0);margin:-25px 0;">
+                <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;margin:-25px 0;">
             </a>
         </div>
         <div class="mxd-header__controls">
@@ -775,7 +775,7 @@
         <div class="mxd-container">
             <div class="mb-5 anim-uni-in-up">
                 <a href="index.html" class="mxd-logo">
-                    <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;filter:brightness(0);">
+                    <img src="images/whitelogo.webp" alt="Stackly Logo" style="width:100px;height:100px;object-fit:contain;border-radius:8px;">
                 </a>
             </div>
             <div class="row g-4">
@@ -914,11 +914,16 @@
         hamburger.addEventListener('click', toggleMenu);
         navLinks.forEach(link => { link.addEventListener('click', toggleMenu); });
 
-        // 5. Dark Mode Toggle
+        // 5. Dark Mode Persistence & Toggle
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
         const switcher = document.getElementById('color-switcher');
         switcher.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+            const theme = document.documentElement.getAttribute('data-theme');
+            const newTheme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         });
 
         // 6. FAQ Accordion Logic

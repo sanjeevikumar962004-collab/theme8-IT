@@ -263,6 +263,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center gap-4 anim-fade-up" style="transition-delay: 0.2s;">
+                    <button id="color-switcher" class="mxd-color-switcher" type="button" aria-label="Toggle Dark Mode"></button>
                     <div class="profile-avatar">A</div>
                 </div>
             </header>
@@ -404,6 +405,23 @@
     <script>
         // Global Array to hold chart instances for theme updating
         let myCharts = [];
+
+        // 1. Dark Mode Persistence & Toggle
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const switcher = document.getElementById('color-switcher');
+            if (switcher) {
+                switcher.addEventListener('click', () => {
+                    const theme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = theme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateChartTheme();
+                });
+            }
+        });
 
         // Function to set chart colors based on current theme
         function updateChartTheme() {
